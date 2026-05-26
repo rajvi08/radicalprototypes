@@ -46,7 +46,7 @@
 
     // hover state on interactive elements
     const interactiveSelector =
-      'a, button, [data-hl], .hl, .sidenav__link, .hero__scroll, .card, .mat, .media-card, .status-cell, input, textarea, select';
+      'a, button, [data-hl], .hl, .sidenav__link, .hero__scroll, .card, .mat, .media-card, .status-cell, .contact-links__btn, input, textarea, select';
 
     document.addEventListener("mouseover", (e) => {
       if (e.target.closest(interactiveSelector)) {

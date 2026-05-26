@@ -50,29 +50,37 @@
     <nav class="sidenav" aria-label="Section navigation">
       <ul>
         <li>
-          <a href="#section-01" class="sidenav__link is-active" data-index="01">
-            <span class="sidenav__num mono">01</span>
+          <a
+            href="#section-01"
+            class="sidenav__link is-active"
+            aria-label="Built Environment and Energy Systems"
+          >
             <span class="sidenav__dot"></span>
             <span class="sidenav__label">Built Environment</span>
           </a>
         </li>
         <li>
-          <a href="#section-02" class="sidenav__link" data-index="02">
-            <span class="sidenav__num mono">02</span>
+          <a
+            href="#section-02"
+            class="sidenav__link"
+            aria-label="Advanced Materials and Metamaterials"
+          >
             <span class="sidenav__dot"></span>
             <span class="sidenav__label">Materials</span>
           </a>
         </li>
         <li>
-          <a href="#section-03" class="sidenav__link" data-index="03">
-            <span class="sidenav__num mono">03</span>
+          <a
+            href="#section-03"
+            class="sidenav__link"
+            aria-label="Media Technology and Memory Systems"
+          >
             <span class="sidenav__dot"></span>
             <span class="sidenav__label">Media + Memory</span>
           </a>
         </li>
         <li>
-          <a href="#section-04" class="sidenav__link" data-index="04">
-            <span class="sidenav__num mono">04</span>
+          <a href="#section-04" class="sidenav__link" aria-label="Status">
             <span class="sidenav__dot"></span>
             <span class="sidenav__label">Status</span>
           </a>
@@ -616,7 +624,6 @@
               </div>
               <div class="status-cell__foot mono">
                 <span><span class="pulse pulse--green"></span> open to selective inquiries</span>
-                <span>contact · hello@radicalprototypes.lab</span>
               </div>
             </div>
           </div>
@@ -624,9 +631,43 @@
 
         <footer class="footer mono">
           <div>© 2026 radical_prototypes · all systems speculative</div>
-          <div>
-            <span class="pulse pulse--green"></span> live ·
-            <span id="clock-foot">--:--:--</span>
+          <div class="footer__right">
+            <div class="contact-links" aria-label="Contact">
+              <a
+                class="contact-links__btn"
+                href="https://www.linkedin.com/in/rajvi-patil-791960232"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn profile"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                  />
+                </svg>
+              </a>
+              <a
+                class="contact-links__btn"
+                href="mailto:rp674@cornell.edu"
+                aria-label="Send email"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 7h16v10H4V7zm0 0l8 6 8-6"
+                  />
+                </svg>
+              </a>
+            </div>
+            <span class="footer__live">
+              <span class="pulse pulse--green"></span> live ·
+              <span id="clock-foot">--:--:--</span>
+            </span>
           </div>
         </footer>
       </section>
