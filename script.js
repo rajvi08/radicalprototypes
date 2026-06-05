@@ -109,8 +109,13 @@
   let particles = [];
   let COUNT = 0;
 
+  function desiredCount() {
+    // denser pool so assembled text reads clearly
+    return Math.min(6000, Math.max(2200, Math.floor((W * H) / 450)));
+  }
+
   function buildPool() {
-    COUNT = Math.min(2400, Math.max(900, Math.floor((W * H) / 1100)));
+    COUNT = desiredCount();
     particles = new Array(COUNT);
     for (let i = 0; i < COUNT; i++) {
       particles[i] = {
@@ -142,8 +147,8 @@
     canvas.style.width = W + "px";
     canvas.style.height = H + "px";
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    if (!particles.length) buildPool();
-    if (particles.length && Math.abs(particles.length - ((W * H) / 1100)) > 600) {
+    const want = desiredCount();
+    if (!particles.length || Math.abs(particles.length - want) > want * 0.22) {
       buildPool();
     }
     structuresDirty = true;
@@ -190,7 +195,8 @@
     lines.forEach((l, i) => o.fillText(l, W / 2, startY + i * lineH));
 
     const img = o.getImageData(0, 0, W, H).data;
-    const step = fs > 80 ? 4 : 3;
+    // finer sampling = more granules tracing each letter
+    const step = fs > 110 ? 3 : fs > 70 ? 2 : 2;
     const pts = [];
     for (let y = 0; y < H; y += step) {
       for (let x = 0; x < W; x += step) {
@@ -433,7 +439,7 @@
         p.curAlpha = p.a;
       }
 
-      const sz = p.hasTarget ? 1.7 : 1.4;
+      const sz = p.hasTarget ? 1.9 : 1.3;
       ctx.fillStyle = `rgba(${INK}, ${p.curAlpha})`;
       ctx.fillRect(p.x - sz / 2, p.y - sz / 2, sz, sz);
     }
