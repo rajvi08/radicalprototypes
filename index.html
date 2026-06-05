@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>radical_prototypes — speculative systems lab</title>
+    <title>radical_prototypes — speculative systems laboratory</title>
     <meta
       name="description"
-      content="A speculative systems lab for adaptive materials, environments, and computation."
+      content="A speculative systems laboratory developing radical prototypes — experimental systems exploring adaptive matter, programmable assemblies, and computational memory."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,13 +18,9 @@
 
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <!-- ambient background: grid + noise -->
-    <div class="ambient" aria-hidden="true">
-      <div class="ambient__grid"></div>
-      <div class="ambient__noise"></div>
-      <div class="ambient__gradient"></div>
-    </div>
+  <body data-scene="hero" data-stage="0">
+    <!-- particle organism -->
+    <canvas id="field" aria-hidden="true"></canvas>
 
     <!-- custom cursor -->
     <div class="cursor" aria-hidden="true">
@@ -38,11 +34,8 @@
         <span class="meta__dot"></span>
         <span class="meta__label">radical_prototypes</span>
       </div>
-      <div class="meta__center mono">
-        <span>r/p · v0.1</span>
-      </div>
       <div class="meta__right mono">
-        <span id="clock">--:--:-- UTC</span>
+        <span>speculative systems laboratory</span>
       </div>
     </header>
 
@@ -50,37 +43,25 @@
     <nav class="sidenav" aria-label="Section navigation">
       <ul>
         <li>
-          <a
-            href="#section-01"
-            class="sidenav__link is-active"
-            aria-label="Built Environment and Energy Systems"
-          >
+          <a href="#scene-hero" class="sidenav__link is-active" aria-label="Home">
             <span class="sidenav__dot"></span>
-            <span class="sidenav__label">Built Environment</span>
+            <span class="sidenav__label">Lab</span>
           </a>
         </li>
         <li>
-          <a
-            href="#section-02"
-            class="sidenav__link"
-            aria-label="Advanced Materials and Metamaterials"
-          >
+          <a href="#scene-philosophy" class="sidenav__link" aria-label="What is a radical prototype">
             <span class="sidenav__dot"></span>
-            <span class="sidenav__label">Materials</span>
+            <span class="sidenav__label">Meaning</span>
           </a>
         </li>
         <li>
-          <a
-            href="#section-03"
-            class="sidenav__link"
-            aria-label="Media Technology and Memory Systems"
-          >
+          <a href="#scene-domains" class="sidenav__link" aria-label="Research domains">
             <span class="sidenav__dot"></span>
-            <span class="sidenav__label">Media + Memory</span>
+            <span class="sidenav__label">Research</span>
           </a>
         </li>
         <li>
-          <a href="#section-04" class="sidenav__link" aria-label="Status">
+          <a href="#scene-status" class="sidenav__link" aria-label="Current research status">
             <span class="sidenav__dot"></span>
             <span class="sidenav__label">Status</span>
           </a>
@@ -89,585 +70,310 @@
     </nav>
 
     <main class="stage">
-      <!-- HERO -->
-      <section class="hero" id="hero">
-        <div class="hero__inner">
-          <div class="hero__meta mono reveal">
-            <span>// speculative systems lab</span>
-            <span>est. 2026</span>
-          </div>
-
-          <h1 class="hero__title">
-            <span class="reveal" style="--d: 0.05s">radical</span><span
-              class="reveal hero__underscore"
-              style="--d: 0.18s"
-              >_</span
-            ><span class="reveal" style="--d: 0.3s">prototypes</span>
-          </h1>
-
-          <p class="hero__subtitle reveal" style="--d: 0.55s">
-            speculative systems lab for
-            <span class="hl" data-hl>adaptive materials</span>,
-            <span class="hl" data-hl>environments</span>, and
-            <span class="hl" data-hl>computation</span>.
+      <!-- ============================== LANDING ============================== -->
+      <section class="scene scene--hero" id="scene-hero">
+        <div class="hero">
+          <h1 class="hero__title reveal">radical_prototypes</h1>
+          <p class="hero__sub reveal" style="--d: 0.15s">
+            speculative systems laboratory
           </p>
-
-          <div class="hero__row mono reveal" style="--d: 0.75s">
-            <div class="hero__col">
-              <span class="hero__k">verticals</span>
-              <span class="hero__v">03 active</span>
-            </div>
-            <div class="hero__col">
-              <span class="hero__k">inventions</span>
-              <span class="hero__v">02 patent-pending</span>
-            </div>
-            <div class="hero__col">
-              <span class="hero__k">collaborations</span>
-              <span class="hero__v">01 industry</span>
-            </div>
-            <div class="hero__col">
-              <span class="hero__k">horizon</span>
-              <span class="hero__v">10–20 yr</span>
-            </div>
-          </div>
-
-          <a href="#section-01" class="hero__scroll mono reveal" style="--d: 1s">
-            <span>scroll · 01 / built environment</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-              <path
-                d="M12 4v14m0 0l-5-5m5 5l5-5"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-              />
+          <ul class="hero__lines mono reveal" style="--d: 0.3s">
+            <li>adaptive matter</li>
+            <li>programmable assemblies</li>
+            <li>computational memory</li>
+          </ul>
+          <a class="hero__enter mono reveal" href="#scene-philosophy" style="--d: 0.5s">
+            <span>begin</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
+              <path d="M12 4v14m0 0l-5-5m5 5l5-5" fill="none" stroke="currentColor" stroke-width="1.5" />
             </svg>
           </a>
         </div>
-
-        <!-- faint corner brackets -->
-        <span class="bracket bracket--tl"></span>
-        <span class="bracket bracket--tr"></span>
-        <span class="bracket bracket--bl"></span>
-        <span class="bracket bracket--br"></span>
       </section>
 
-      <!-- SECTION 01 — BUILT ENVIRONMENT -->
-      <section class="section section--01" id="section-01">
-        <div class="section__head">
-          <div class="section__index mono reveal">01 /</div>
-          <h2 class="section__title reveal" style="--d: 0.08s">
-            Built Environment <br />&amp; Energy Systems
-          </h2>
-          <p class="section__lede reveal" style="--d: 0.2s">
-            Buildings that behave as instruments — sensing, generating, and
-            conserving energy. We design facades that compute, envelopes that
-            think, and infrastructures that close their own loops.
-          </p>
+      <!-- ============================== PHILOSOPHY ============================== -->
+      <section class="scene scene--philosophy" id="scene-philosophy">
+        <div class="philosophy__sticky">
+          <div class="philosophy__kicker mono">01 / what is a radical prototype?</div>
+
+          <div class="philosophy__def" data-show-stage="1">
+            <p>
+              A radical prototype is an experimental system built to challenge
+              fundamental assumptions about how products, materials, and
+              experiences are created.
+            </p>
+            <p class="philosophy__def-note mono">
+              rather than optimizing existing products, the lab builds working
+              prototypes of alternative futures.
+            </p>
+          </div>
+
+          <div class="philosophy__question" data-show-stage="0">
+            <span class="mono">central question</span>
+            <p>
+              Can physical and digital systems become adaptive enough that mass
+              standardization is no longer necessary?
+            </p>
+          </div>
         </div>
 
-        <div class="section__body section__body--split">
-          <div class="card card--lined reveal" style="--d: 0.1s">
-            <div class="card__head mono">
-              <span>01.A</span><span>thermal envelope</span>
-            </div>
-            <h3 class="card__title">
-              <span class="hl" data-hl>Energy leakage</span> + insulation
-              systems
-            </h3>
-            <p class="card__body">
-              High-resolution thermal mapping of building envelopes, coupled
-              with adaptive insulation profiles that respond to seasonal and
-              diurnal loads.
-            </p>
-            <!-- airflow SVG -->
-            <svg
-              class="card__diagram airflow"
-              viewBox="0 0 400 120"
-              aria-hidden="true"
-            >
-              <defs>
-                <pattern
-                  id="grid01"
-                  width="20"
-                  height="20"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 20 0 L 0 0 0 20"
-                    fill="none"
-                    stroke="#eaeaea"
-                    stroke-width="0.5"
-                  />
-                </pattern>
-              </defs>
-              <rect width="400" height="120" fill="url(#grid01)" />
-              <rect
-                x="60"
-                y="20"
-                width="280"
-                height="80"
-                fill="none"
-                stroke="#111"
-                stroke-width="1"
-              />
-              <path
-                class="flow"
-                d="M0 40 C 80 30, 160 50, 240 40 S 400 30, 400 40"
-                fill="none"
-                stroke="#111"
-                stroke-width="1"
-                stroke-dasharray="3 4"
-              />
-              <path
-                class="flow flow--2"
-                d="M0 70 C 100 60, 200 80, 280 70 S 400 60, 400 70"
-                fill="none"
-                stroke="#111"
-                stroke-width="1"
-                stroke-dasharray="3 4"
-              />
-              <path
-                class="flow flow--3"
-                d="M0 95 C 90 88, 180 100, 260 92 S 400 88, 400 95"
-                fill="none"
-                stroke="#111"
-                stroke-width="1"
-                stroke-dasharray="3 4"
-              />
-            </svg>
+        <!-- accessible / reduced-motion narrative (particles render these visually) -->
+        <div class="sr-only">
+          <h2>What is a radical prototype?</h2>
+          <p>
+            A radical prototype is an experimental system built to challenge
+            fundamental assumptions about how products, materials, and
+            experiences are created.
+          </p>
+          <p>Not a product.</p>
+          <p>Not a prediction.</p>
+          <p>A test of a possible future.</p>
+        </div>
+      </section>
+
+      <!-- ============================== DOMAINS ============================== -->
+      <section class="scene scene--domains" id="scene-domains">
+        <div class="domains__stage">
+          <div class="domains__head mono">02 / the lab's research domains</div>
+
+          <div class="domains__labels">
+            <button class="domain-label" data-domain="loop" aria-label="Open Closed Loop Systems">
+              <span class="domain-label__num mono">01</span>
+              <span class="domain-label__title">Closed Loop<br />Systems</span>
+              <span class="domain-label__sub mono">adaptive · circular · programmable</span>
+            </button>
+
+            <button class="domain-label" data-domain="memory" aria-label="Open Memory Systems">
+              <span class="domain-label__num mono">02</span>
+              <span class="domain-label__title">Memory<br />Systems</span>
+              <span class="domain-label__sub mono">capture · reconstruct · preserve</span>
+            </button>
           </div>
 
-          <div class="card card--lined reveal" style="--d: 0.18s">
-            <div class="card__head mono">
-              <span>01.B</span><span>generative skin</span>
-            </div>
-            <h3 class="card__title">
-              <span class="hl" data-hl>Energy-generating facades</span>
-            </h3>
-            <p class="card__body">
-              Photo-active, piezo-responsive cladding modules. Facades treated
-              as distributed power plants — geometry tuned per solar exposure
-              and wind incidence.
+          <div class="domains__hint mono">select a domain — the organism reorganizes</div>
+        </div>
+
+        <!-- DETAIL: CLOSED LOOP -->
+        <article class="detail" id="detail-loop">
+          <header class="detail__head">
+            <span class="detail__kicker mono">domain 01 / closed loop systems</span>
+            <h2 class="detail__title">Closed Loop Systems</h2>
+            <p class="detail__desc">
+              Researching how adaptive systems reduce waste by responding to
+              individual needs rather than statistical averages.
             </p>
-
-            <!-- facade tile grid -->
-            <div class="facade" aria-hidden="true">
-              <span></span><span></span><span></span><span></span
-              ><span></span><span></span><span></span><span></span><span></span
-              ><span></span><span></span><span></span><span></span
-              ><span></span><span></span><span></span><span></span><span></span
-              ><span></span><span></span><span></span><span></span
-              ><span></span><span></span>
-            </div>
-          </div>
-
-          <div class="card card--photo reveal" style="--d: 0.26s">
-            <div class="card__head mono">
-              <span>01.C</span><span>reference field</span>
-            </div>
-            <div
-              class="card__photo"
-              style="
-                background-image: url('https://picsum.photos/seed/rp-facade-01/1400/900');
-              "
-            >
-              <div class="card__photo-overlay"></div>
-              <div class="card__photo-meta mono">
-                <span>img.01 / facade study</span>
-                <span>lat: 40.71 · lon: -74.00</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card card--lined reveal" style="--d: 0.34s">
-            <div class="card__head mono">
-              <span>01.D</span><span>autonomy</span>
-            </div>
-            <h3 class="card__title">
-              Self-sufficient buildings +
-              <span class="hl" data-hl>closed-loop systems</span>
-            </h3>
-            <p class="card__body">
-              Water, energy, and atmospheric flows resolved within the building
-              boundary. Optimization tools that compute facade performance
-              against a 30-year climate horizon.
-            </p>
-            <ul class="ticks mono">
-              <li><span>›</span> facade.compute()</li>
-              <li><span>›</span> thermal.balance()</li>
-              <li><span>›</span> grid.detach()</li>
+            <ul class="chips mono">
+              <li>hyperpersonalization</li>
+              <li>programmable assemblies</li>
+              <li>computational materials</li>
+              <li>multifunctional matter</li>
+              <li>circular manufacturing</li>
             </ul>
-          </div>
-        </div>
+          </header>
+
+          <ol class="projects">
+            <li class="project">
+              <div class="project__index mono">01</div>
+              <div class="project__body">
+                <h3 class="project__title">Morphable Mannequin</h3>
+                <p class="project__lede">
+                  Digitally controlled adaptive mannequin system. Physical
+                  representation becomes programmable.
+                </p>
+                <div class="project__meta">
+                  <ul class="tags mono">
+                    <li>apparel</li><li>footwear</li><li>ergonomics</li>
+                    <li>medical products</li><li>digital twins</li>
+                  </ul>
+                  <span class="badge mono"><span class="pulse pulse--yellow"></span> prototype development</span>
+                </div>
+              </div>
+            </li>
+
+            <li class="project">
+              <div class="project__index mono">02</div>
+              <div class="project__body">
+                <h3 class="project__title">Computational Materials Library</h3>
+                <p class="project__lede">Geometry as material property.</p>
+                <div class="project__meta">
+                  <ul class="tags mono">
+                    <li>lattices</li><li>gyroids</li><li>TPMS</li>
+                    <li>auxetics</li><li>graded porosity</li>
+                  </ul>
+                  <ul class="tags tags--soft mono">
+                    <li>shoe midsoles</li><li>mattresses</li>
+                    <li>seating</li><li>aerospace interiors</li>
+                  </ul>
+                  <span class="badge mono"><span class="pulse pulse--green"></span> active research</span>
+                </div>
+              </div>
+            </li>
+
+            <li class="project">
+              <div class="project__index mono">03</div>
+              <div class="project__body">
+                <h3 class="project__title">Modulon</h3>
+                <p class="project__lede">
+                  Speculative multifunctional material platform.
+                </p>
+                <p class="project__q">
+                  Can a single material perform multiple traditionally separate
+                  functions?
+                </p>
+                <div class="project__meta">
+                  <ul class="tags mono">
+                    <li>structure</li><li>insulation</li>
+                    <li>sensing</li><li>environmental response</li>
+                  </ul>
+                  <span class="badge mono"><span class="pulse"></span> concept development</span>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <button class="detail__back mono" data-back>← all domains</button>
+        </article>
+
+        <!-- DETAIL: MEMORY -->
+        <article class="detail detail--memory" id="detail-memory">
+          <header class="detail__head">
+            <span class="detail__kicker mono">domain 02 / memory systems</span>
+            <h2 class="detail__title">Memory Systems</h2>
+            <p class="detail__desc">
+              Researching how human experiences can be captured, reconstructed,
+              preserved, and revisited.
+            </p>
+            <ul class="chips mono">
+              <li>memory reconstruction</li>
+              <li>spatial experience</li>
+              <li>experiential archives</li>
+              <li>digital memory systems</li>
+              <li>continuity of human knowledge</li>
+            </ul>
+          </header>
+
+          <ol class="projects projects--soft">
+            <li class="project">
+              <div class="project__index mono">01</div>
+              <div class="project__body">
+                <h3 class="project__title">Memory Reconstruction</h3>
+                <p class="project__lede">Memory represented as navigable space.</p>
+                <span class="badge mono"><span class="pulse"></span> exploratory research</span>
+              </div>
+            </li>
+
+            <li class="project">
+              <div class="project__index mono">02</div>
+              <div class="project__body">
+                <h3 class="project__title">Experiential Archives</h3>
+                <p class="project__lede">
+                  Preserving lived experience rather than media files.
+                </p>
+                <span class="badge mono"><span class="pulse"></span> exploratory research</span>
+              </div>
+            </li>
+
+            <li class="project">
+              <div class="project__index mono">03</div>
+              <div class="project__body">
+                <h3 class="project__title">Future Capture Systems</h3>
+                <p class="project__lede">
+                  Speculative devices for high-fidelity memory recording.
+                </p>
+                <p class="project__q">
+                  Memory Graph Research — continuity of human knowledge as a
+                  connected structure.
+                </p>
+                <span class="badge mono"><span class="pulse"></span> exploratory research</span>
+              </div>
+            </li>
+          </ol>
+          <button class="detail__back mono" data-back>← all domains</button>
+        </article>
       </section>
 
-      <!-- SECTION 02 — MATERIALS -->
-      <section class="section section--02" id="section-02">
-        <div class="section__head">
-          <div class="section__index mono reveal">02 /</div>
-          <h2 class="section__title reveal" style="--d: 0.08s">
-            Advanced Materials <br />&amp; Metamaterials
-          </h2>
-          <p class="section__lede reveal" style="--d: 0.2s">
-            Geometry as mechanical property. We design lattices and
-            microstructures whose behavior is tuned at the unit-cell level —
-            for seating, footwear, aerospace, and beyond.
+      <!-- ============================== STATUS ============================== -->
+      <section class="scene scene--status" id="scene-status">
+        <div class="status">
+          <div class="status__head">
+            <span class="mono">03 / current research status</span>
+            <h2 class="status__title">Current Research Status</h2>
+          </div>
+
+          <ul class="status__list">
+            <li class="status-row">
+              <span class="status-row__name">Morphable Mannequin</span>
+              <span class="status-row__state mono"><span class="pulse pulse--yellow"></span> prototype development</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__name">Computational Materials</span>
+              <span class="status-row__state mono"><span class="pulse pulse--green"></span> active research</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__name">Modulon</span>
+              <span class="status-row__state mono"><span class="pulse"></span> concept development</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__name">Memory Systems</span>
+              <span class="status-row__state mono"><span class="pulse"></span> exploratory research</span>
+            </li>
+            <li class="status-row">
+              <span class="status-row__name">Industry Engagement</span>
+              <span class="status-row__state mono"><span class="pulse pulse--green"></span> exploratory discussions</span>
+            </li>
+          </ul>
+
+          <div class="status__collab">
+            <span class="mono">potential collaborator</span>
+            <div class="status__collab-name">Skyjectory</div>
+            <p class="status__collab-focus">
+              Application focus —
+              <span class="em">lightweight metamaterial structures for future
+              mobility systems</span>.
+            </p>
+          </div>
+
+          <p class="status__manifesto">
+            Not a startup. Not an agency. A long-horizon research laboratory
+            exploring <span class="em">adaptive matter</span>,
+            <span class="em">programmable systems</span>, and
+            <span class="em">memory technologies</span> — operating on a 10–20
+            year research horizon.
           </p>
-        </div>
-
-        <div class="section__body section__body--mat">
-          <div class="mat-grid">
-            <div class="mat reveal" style="--d: 0.08s">
-              <div class="mat__head mono">
-                <span>02.A</span><span>lattice</span>
-              </div>
-              <h3 class="mat__title">
-                <span class="hl" data-hl>3D printed lattice structures</span>
-              </h3>
-              <p class="mat__body">
-                Octet, gyroid, and re-entrant unit cells composed across
-                gradient densities. Geometry that replaces material.
-              </p>
-              <div class="lattice" aria-hidden="true">
-                <svg viewBox="0 0 200 120">
-                  <g class="lattice__g">
-                    <!-- generated triangulated lattice -->
-                    <g stroke="#111" stroke-width="0.8" fill="none">
-                      <path
-                        d="M10 100 L30 60 L50 100 Z M30 60 L50 20 L70 60 M50 100 L70 60 L90 100 Z M70 60 L90 20 L110 60 M90 100 L110 60 L130 100 Z M110 60 L130 20 L150 60 M130 100 L150 60 L170 100 Z M150 60 L170 20 L190 60 M170 100 L190 60"
-                      />
-                    </g>
-                  </g>
-                </svg>
-              </div>
-            </div>
-
-            <div class="mat reveal" style="--d: 0.16s">
-              <div class="mat__head mono">
-                <span>02.B</span><span>tuning</span>
-              </div>
-              <h3 class="mat__title">
-                <span class="hl" data-hl>Mechanical behavior tuning</span>
-              </h3>
-              <p class="mat__body">
-                Stiffness, damping, and energy absorption tuned spatially —
-                anisotropic by design.
-              </p>
-              <div class="bars" aria-hidden="true">
-                <span style="--h: 30%"></span>
-                <span style="--h: 55%"></span>
-                <span style="--h: 70%"></span>
-                <span style="--h: 90%"></span>
-                <span style="--h: 65%"></span>
-                <span style="--h: 80%"></span>
-                <span style="--h: 45%"></span>
-                <span style="--h: 60%"></span>
-                <span style="--h: 35%"></span>
-              </div>
-            </div>
-
-            <div class="mat reveal" style="--d: 0.24s">
-              <div class="mat__head mono">
-                <span>02.C</span><span>application</span>
-              </div>
-              <h3 class="mat__title">
-                <span class="hl" data-hl>Automotive seating</span> +
-                <span class="hl" data-hl>footwear systems</span>
-              </h3>
-              <p class="mat__body">
-                Pressure-mapped lattice midsoles and seat cores — replacing
-                foam stacks with single-material printed assemblies.
-              </p>
-            </div>
-
-            <div class="mat mat--wide reveal" style="--d: 0.32s">
-              <div class="mat__head mono">
-                <span>02.D</span><span>auxetic</span>
-              </div>
-              <h3 class="mat__title">
-                <span class="hl" data-hl>Auxetic surfaces</span> +
-                <span class="hl" data-hl>programmable matter</span>
-              </h3>
-              <p class="mat__body">
-                Surfaces with negative Poisson's ratio that thicken under
-                tension. Matter with state — addressable, switchable,
-                computationally reprogrammable.
-              </p>
-              <div class="auxetic" aria-hidden="true">
-                <svg viewBox="0 0 600 80" preserveAspectRatio="none">
-                  <g stroke="#111" stroke-width="0.8" fill="none">
-                    <!-- row of bow-tie auxetic cells -->
-                    <g class="auxetic__row">
-                      <path
-                        d="M0 0 L20 20 L0 40 L20 60 L0 80
-                            M20 20 L40 0 M20 20 L40 40 M20 60 L40 40 M20 60 L40 80
-                            M40 0 L60 20 L40 40 L60 60 L40 80
-                            M60 20 L80 0 M60 20 L80 40 M60 60 L80 40 M60 60 L80 80
-                            M80 0 L100 20 L80 40 L100 60 L80 80
-                            M100 20 L120 0 M100 20 L120 40 M100 60 L120 40 M100 60 L120 80
-                            M120 0 L140 20 L120 40 L140 60 L120 80
-                            M140 20 L160 0 M140 20 L160 40 M140 60 L160 40 M140 60 L160 80
-                            M160 0 L180 20 L160 40 L180 60 L160 80
-                            M180 20 L200 0 M180 20 L200 40 M180 60 L200 40 M180 60 L200 80
-                            M200 0 L220 20 L200 40 L220 60 L200 80
-                            M220 20 L240 0 M220 20 L240 40 M220 60 L240 40 M220 60 L240 80
-                            M240 0 L260 20 L240 40 L260 60 L240 80
-                            M260 20 L280 0 M260 20 L280 40 M260 60 L280 40 M260 60 L280 80
-                            M280 0 L300 20 L280 40 L300 60 L280 80
-                            M300 20 L320 0 M300 20 L320 40 M300 60 L320 40 M300 60 L320 80
-                            M320 0 L340 20 L320 40 L340 60 L320 80
-                            M340 20 L360 0 M340 20 L360 40 M340 60 L360 40 M340 60 L360 80
-                            M360 0 L380 20 L360 40 L380 60 L360 80
-                            M380 20 L400 0 M380 20 L400 40 M380 60 L400 40 M380 60 L400 80
-                            M400 0 L420 20 L400 40 L420 60 L400 80
-                            M420 20 L440 0 M420 20 L440 40 M420 60 L440 40 M420 60 L440 80
-                            M440 0 L460 20 L440 40 L460 60 L440 80
-                            M460 20 L480 0 M460 20 L480 40 M460 60 L480 40 M460 60 L480 80
-                            M480 0 L500 20 L480 40 L500 60 L480 80
-                            M500 20 L520 0 M500 20 L520 40 M500 60 L520 40 M500 60 L520 80
-                            M520 0 L540 20 L520 40 L540 60 L520 80
-                            M540 20 L560 0 M540 20 L560 40 M540 60 L560 40 M540 60 L560 80
-                            M560 0 L580 20 L560 40 L580 60 L560 80
-                            M580 20 L600 0 M580 20 L600 40 M580 60 L600 40 M580 60 L600 80"
-                      />
-                    </g>
-                  </g>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 03 — MEDIA + MEMORY -->
-      <section class="section section--03" id="section-03">
-        <div class="section__head">
-          <div class="section__index mono reveal">03 /</div>
-          <h2 class="section__title reveal" style="--d: 0.08s">
-            Media Technology <br />&amp; Memory Systems
-          </h2>
-          <p class="section__lede reveal" style="--d: 0.2s">
-            Devices that record presence — not just images. We are building
-            instruments for the capture, reconstruction, and replay of lived
-            spatial experience.
-          </p>
-        </div>
-
-        <div class="section__body section__body--media">
-          <div class="media-grid">
-            <div class="media-card media-card--lg reveal" style="--d: 0.08s">
-              <div class="media-card__inner">
-                <div
-                  class="media-card__photo"
-                  style="
-                    background-image: url('https://picsum.photos/seed/rp-capture-03a/1400/1050');
-                  "
-                ></div>
-                <div class="scan" aria-hidden="true">
-                  <span class="scan__line"></span>
-                  <span class="scan__bracket scan__bracket--tl"></span>
-                  <span class="scan__bracket scan__bracket--tr"></span>
-                  <span class="scan__bracket scan__bracket--bl"></span>
-                  <span class="scan__bracket scan__bracket--br"></span>
-                </div>
-                <div class="media-card__meta mono">
-                  <span>03.A · capture device</span>
-                  <span class="rec">
-                    <span class="rec__dot"></span> recording
-                  </span>
-                </div>
-              </div>
-              <h3 class="media-card__title">
-                <span class="hl" data-hl>Memory capture device</span>
-              </h3>
-              <p class="media-card__body">
-                A wearable instrument for high-fidelity spatial recording —
-                position, light field, and ambient acoustic context.
-              </p>
-            </div>
-
-            <div class="media-card reveal" style="--d: 0.18s">
-              <div class="media-card__inner media-card__inner--ghost">
-                <div class="ghost-stack" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span
-                  ><span></span>
-                </div>
-              </div>
-              <h3 class="media-card__title">
-                <span class="hl" data-hl>Memory reconstruction</span>
-              </h3>
-              <p class="media-card__body">
-                Stitching captures into navigable scenes. Time as a coordinate
-                axis you can scrub.
-              </p>
-            </div>
-
-            <div class="media-card reveal" style="--d: 0.26s">
-              <div class="media-card__inner media-card__inner--depth">
-                <div class="depth" aria-hidden="true">
-                  <span></span><span></span><span></span><span></span
-                  ><span></span><span></span>
-                </div>
-              </div>
-              <h3 class="media-card__title">
-                <span class="hl" data-hl>Photogrammetry</span> +
-                <span class="hl" data-hl>spatial reconstruction</span>
-              </h3>
-              <p class="media-card__body">
-                Dense point clouds resolved on-device. Mesh, texture, and
-                semantic labelling at the edge.
-              </p>
-            </div>
-
-            <div class="media-card media-card--lg reveal" style="--d: 0.34s">
-              <div class="media-card__inner media-card__inner--exp">
-                <div
-                  class="media-card__photo media-card__photo--soft"
-                  style="
-                    background-image: url('https://picsum.photos/seed/rp-spatial-03d/1400/1050');
-                  "
-                ></div>
-                <div class="media-card__meta mono">
-                  <span>03.D · experiential recording</span>
-                  <span>fps 240 · depth 14b</span>
-                </div>
-              </div>
-              <h3 class="media-card__title">
-                <span class="hl" data-hl>Experiential recording systems</span>
-              </h3>
-              <p class="media-card__body">
-                Not video. Not VR. A new substrate for keeping moments —
-                played back as space, not as frames.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 04 — STATUS -->
-      <section class="section section--04" id="section-04">
-        <div class="section__head">
-          <div class="section__index mono reveal">04 /</div>
-          <h2 class="section__title reveal" style="--d: 0.08s">STATUS</h2>
-          <p class="section__lede reveal" style="--d: 0.2s">
-            Current operating posture across the lab.
-          </p>
-        </div>
-
-        <div class="status-panel reveal" style="--d: 0.1s">
-          <div class="status-panel__bar mono">
-            <span class="status-panel__bar-l">
-              <span class="pulse pulse--green"></span> system · nominal
-            </span>
-            <span class="status-panel__bar-c">
-              radical_prototypes / live ops
-            </span>
-            <span class="status-panel__bar-r">
-              <span id="uptime">uptime --:--:--</span>
-            </span>
-          </div>
-
-          <div class="status-grid">
-            <div class="status-cell">
-              <div class="status-cell__k mono">node.01</div>
-              <div class="status-cell__v">
-                <span class="hl" data-hl>2 inventions</span> in patent-pending
-                status
-              </div>
-              <div class="status-cell__bar">
-                <span style="--w: 64%"></span>
-              </div>
-              <div class="status-cell__foot mono">
-                <span><span class="pulse"></span> filed</span>
-                <span>q.review</span>
-              </div>
-            </div>
-
-            <div class="status-cell">
-              <div class="status-cell__k mono">node.02</div>
-              <div class="status-cell__v">
-                <span class="hl" data-hl>1 active collaboration</span> ·
-                automotive + aerospace metamaterials
-              </div>
-              <div class="status-cell__bar">
-                <span style="--w: 82%"></span>
-              </div>
-              <div class="status-cell__foot mono">
-                <span><span class="pulse pulse--yellow"></span> collaboration active</span>
-                <span>ndA · t-12mo</span>
-              </div>
-            </div>
-
-            <div class="status-cell">
-              <div class="status-cell__k mono">node.03</div>
-              <div class="status-cell__v">
-                Ongoing R&amp;D across
-                <span class="hl" data-hl>all three verticals</span>
-              </div>
-              <div class="status-cell__bar">
-                <span style="--w: 91%"></span>
-              </div>
-              <div class="status-cell__foot mono">
-                <span><span class="pulse"></span> 03 streams</span>
-                <span>continuous</span>
-              </div>
-            </div>
-
-            <div class="status-cell status-cell--wide">
-              <div class="status-cell__k mono">positioning</div>
-              <div class="status-cell__v">
-                <span class="hl" data-hl>Speculative systems research</span> +
-                <span class="hl" data-hl>applied prototyping</span>.
-                Operating 10–20 years ahead of present consumer technology,
-                with patents, partnerships, and physical hardware to show for
-                it.
-              </div>
-              <div class="status-cell__foot mono">
-                <span><span class="pulse pulse--green"></span> open to selective inquiries</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <footer class="footer mono">
-          <div>© 2026 radical_prototypes · all systems speculative</div>
-          <div class="footer__right">
-            <div class="contact-links" aria-label="Contact">
-              <a
-                class="contact-links__btn"
-                href="https://www.linkedin.com/in/rajvi-patil-791960232"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn profile"
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path
-                    fill="currentColor"
-                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-                  />
-                </svg>
-              </a>
-              <a
-                class="contact-links__btn"
-                href="mailto:rp674@cornell.edu"
-                aria-label="Send email"
-              >
-                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4 7h16v10H4V7zm0 0l8 6 8-6"
-                  />
-                </svg>
-              </a>
-            </div>
-            <span class="footer__live">
-              <span class="pulse pulse--green"></span> live ·
-              <span id="clock-foot">--:--:--</span>
-            </span>
+          <div>© 2026 radical_prototypes · speculative systems laboratory</div>
+          <div class="contact-links" aria-label="Contact">
+            <a
+              class="contact-links__btn"
+              href="https://www.linkedin.com/in/rajvi-patil-791960232"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn profile"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                />
+              </svg>
+            </a>
+            <a
+              class="contact-links__btn"
+              href="mailto:rp674@cornell.edu"
+              aria-label="Send email"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M4 7h16v10H4V7zm0 0l8 6 8-6"
+                />
+              </svg>
+            </a>
           </div>
         </footer>
       </section>
