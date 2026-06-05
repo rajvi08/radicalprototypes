@@ -110,8 +110,8 @@
   let COUNT = 0;
 
   function desiredCount() {
-    // denser pool so assembled text reads clearly
-    return Math.min(6000, Math.max(2200, Math.floor((W * H) / 450)));
+    // dense pool (~3-5x) so assembled text reads as continuous typography
+    return Math.min(13000, Math.max(6500, Math.floor((W * H) / 150)));
   }
 
   function buildPool() {
@@ -127,7 +127,7 @@
         ty: 0,
         hasTarget: false,
         seed: Math.random() * 1000,
-        k: 0.012 + Math.random() * 0.01, // per-particle spring (stagger)
+        k: 0.09 + Math.random() * 0.055, // per-particle spring (stagger), tuned to settle precisely
         node: -1, // network node index
         struct: -1, // network structure index
         ox: 0, // orbit offset
@@ -195,13 +195,17 @@
     lines.forEach((l, i) => o.fillText(l, W / 2, startY + i * lineH));
 
     const img = o.getImageData(0, 0, W, H).data;
-    // finer sampling = more granules tracing each letter
-    const step = fs > 110 ? 3 : fs > 70 ? 2 : 2;
+    // dense, continuous sampling: 2px grid for interior fill + edge pass for sharp contours
+    const step = 2;
     const pts = [];
     for (let y = 0; y < H; y += step) {
       for (let x = 0; x < W; x += step) {
-        if (img[(y * W + x) * 4 + 3] > 130) {
-          pts.push({ x: x + (Math.random() - 0.5) * step, y: y + (Math.random() - 0.5) * step });
+        // lower threshold keeps anti-aliased edge pixels -> continuous letterforms
+        if (img[(y * W + x) * 4 + 3] > 70) {
+          pts.push({
+            x: x + (Math.random() - 0.5) * step,
+            y: y + (Math.random() - 0.5) * step,
+          });
         }
       }
     }
@@ -417,11 +421,12 @@
         p.tx = s.cx + nx * s.r + p.ox * orbit;
         p.ty = s.cy + ny * s.r + p.oy * orbit;
         p.hasTarget = s.alpha > 0.05;
-        steer(p, 0.018, 0.82, s.hover);
+        steer(p, 0.018, 0.82, s.hover, false);
         p.curAlpha = p.a * s.alpha;
         if (s.hover > 0.4 && nd.d === 0) p.curAlpha = Math.min(1, p.curAlpha + 0.3);
       } else if (p.hasTarget) {
-        steer(p, p.k, 0.84, 0);
+        // text: strong attraction + crisp settle
+        steer(p, p.k, 0.72, 0, true);
         p.curAlpha = p.a;
       } else {
         // free drift
@@ -439,7 +444,7 @@
         p.curAlpha = p.a;
       }
 
-      const sz = p.hasTarget ? 1.9 : 1.3;
+      const sz = p.hasTarget ? 1.7 : 1.2;
       ctx.fillStyle = `rgba(${INK}, ${p.curAlpha})`;
       ctx.fillRect(p.x - sz / 2, p.y - sz / 2, sz, sz);
     }
@@ -450,13 +455,20 @@
     requestAnimationFrame(loop);
   }
 
-  function steer(p, k, damp, hover) {
+  function steer(p, k, damp, hover, tight) {
     const dx = p.tx - p.x;
     const dy = p.ty - p.y;
     const dist = Math.hypot(dx, dy);
     p.vx += dx * k;
     p.vy += dy * k;
-    if (dist > 18) {
+    if (tight) {
+      // organic shimmer only while travelling far; settle crisply when close
+      if (dist > 34) {
+        const ang = flow(p.x, p.y);
+        p.vx += Math.cos(ang) * 0.13;
+        p.vy += Math.sin(ang) * 0.13;
+      }
+    } else if (dist > 18) {
       const ang = flow(p.x, p.y);
       const j = 0.22 + hover * 0.3;
       p.vx += Math.cos(ang) * j;
@@ -466,6 +478,11 @@
     p.vy *= damp;
     p.x += p.vx;
     p.y += p.vy;
+    // micro-settle: damp residual jitter so glyph edges stay sharp but alive
+    if (tight && dist < 1.2) {
+      p.vx *= 0.4;
+      p.vy *= 0.4;
+    }
   }
 
   function drawEdges() {
