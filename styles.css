@@ -583,6 +583,13 @@ body[data-stage="1"] .philosophy__def[data-show-stage="1"] {
   flex-direction: column;
 }
 
+.proto-card__link {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+}
+
 .proto-card__image {
   position: relative;
   width: 100%;
