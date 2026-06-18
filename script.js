@@ -8,7 +8,7 @@
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const INK = "10, 10, 10";
+  const INK = "91, 147, 214";
   const YELLOW = "255, 230, 60";
 
   /* =======================================================
@@ -51,6 +51,25 @@
     addEventListener("mouseout", (e) => {
       if (e.target.closest(sel)) document.body.classList.remove("is-hover");
     });
+  })();
+
+  /* =======================================================
+     PROTO CARDS — match all frames to the media's true ratio
+  ======================================================= */
+  (() => {
+    const media = document.querySelector(".proto-card__media");
+    const grid = document.querySelector(".proto-grid");
+    if (!media || !grid) return;
+    const apply = () => {
+      if (media.naturalWidth && media.naturalHeight) {
+        grid.style.setProperty(
+          "--proto-ratio",
+          media.naturalWidth + " / " + media.naturalHeight
+        );
+      }
+    };
+    if (media.complete) apply();
+    media.addEventListener("load", apply);
   })();
 
   /* =======================================================
@@ -114,6 +133,17 @@
     return Math.min(13000, Math.max(6500, Math.floor((W * H) / 150)));
   }
 
+  // monochrome black blend: interpolate each particle between light gray & black
+  const MONO_LIGHT = [170, 170, 170];
+  const MONO_DARK = [12, 12, 12];
+  function monoShade() {
+    const t = Math.pow(Math.random(), 0.85);
+    const r = Math.round(MONO_LIGHT[0] + (MONO_DARK[0] - MONO_LIGHT[0]) * t);
+    const g = Math.round(MONO_LIGHT[1] + (MONO_DARK[1] - MONO_LIGHT[1]) * t);
+    const b = Math.round(MONO_LIGHT[2] + (MONO_DARK[2] - MONO_LIGHT[2]) * t);
+    return r + ", " + g + ", " + b;
+  }
+
   function buildPool() {
     COUNT = desiredCount();
     particles = new Array(COUNT);
@@ -133,6 +163,7 @@
         ox: 0, // orbit offset
         oy: 0,
         a: 0.35 + Math.random() * 0.3, // base alpha
+        col: monoShade(), // per-particle gray→black (monochrome blend)
       };
     }
   }
@@ -174,22 +205,23 @@
     o.textAlign = "center";
     o.textBaseline = "middle";
     const base = 100;
-    o.font = `600 ${base}px "Space Grotesk", sans-serif`;
+    o.font = `600 ${base}px "Electromagnetic Lungs", "Space Grotesk", sans-serif`;
     let widest = 1;
     lines.forEach((l) => {
       widest = Math.max(widest, o.measureText(l).width);
     });
     let fs = (base * (W * 0.78)) / widest;
     fs = Math.max(26, Math.min(fs, Math.min(150, H * 0.26)));
-    // also constrain by total height
+    // also constrain by total height (kept compact so top kicker + bottom
+    // overlay text have clear room around the centered phrase)
     const lh = fs * 1.08;
     const totalH = lh * lines.length;
-    if (totalH > H * 0.6) {
-      fs *= (H * 0.6) / totalH;
+    if (totalH > H * 0.45) {
+      fs *= (H * 0.45) / totalH;
     }
     const lineH = fs * 1.08;
 
-    o.font = `600 ${fs}px "Space Grotesk", sans-serif`;
+    o.font = `600 ${fs}px "Electromagnetic Lungs", "Space Grotesk", sans-serif`;
     o.fillStyle = "#000";
     const startY = H / 2 - ((lines.length - 1) * lineH) / 2;
     lines.forEach((l, i) => o.fillText(l, W / 2, startY + i * lineH));
@@ -386,7 +418,7 @@
     T += 16;
     ctx.clearRect(0, 0, W, H);
 
-    const networkMode = currentScene === "domains";
+    const networkMode = false;
 
     // advance structures
     if (networkMode && structures.length) {
@@ -445,7 +477,7 @@
       }
 
       const sz = p.hasTarget ? 1.7 : 1.2;
-      ctx.fillStyle = `rgba(${INK}, ${p.curAlpha})`;
+      ctx.fillStyle = `rgba(${p.col}, ${p.curAlpha})`;
       ctx.fillRect(p.x - sz / 2, p.y - sz / 2, sz, sz);
     }
 
@@ -569,12 +601,8 @@
       lastAppliedScene = currentScene;
       return;
     } else if (currentScene === "domains") {
-      if (structuresDirty || !structures.length) {
-        buildStructures();
-      } else {
-        layoutStructures();
-        assignNetwork();
-      }
+      // particles drift freely instead of assembling into a graph/network
+      if (force || lastApplied !== currentScene) assignFree();
     }
     lastApplied = currentScene;
     lastAppliedScene = currentScene;
@@ -590,9 +618,6 @@
     navLinks.forEach((a) =>
       a.classList.toggle("is-active", a.getAttribute("href") === "#scene-" + scene)
     );
-    if (scene === "domains" && (structuresDirty || !structures.length)) {
-      buildStructures();
-    }
     applyState(true);
   }
 
@@ -687,10 +712,18 @@
 
     // re-sample text once the geometric font is ready
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
+      const resampleFonts = () => {
         sampleCache.clear();
         if (currentScene === "philosophy") applyState(true);
-      });
+      };
+      // explicitly request the display font so the granule text picks it up
+      if (document.fonts.load) {
+        document.fonts
+          .load('600 100px "Electromagnetic Lungs"')
+          .then(resampleFonts)
+          .catch(() => {});
+      }
+      document.fonts.ready.then(resampleFonts);
     }
   } else {
     // no canvas (reduced motion): still wire nav active state on scroll
