@@ -48,9 +48,16 @@
         border-color: var(--ink);
       }
 
-      /* sliding viewport — fills the top region above the slider */
-      .mm__viewport {
+      /* carousel with side arrows */
+      .mm__carousel {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-height: 0;
         margin-top: clamp(16px, 2.5vh, 28px);
+      }
+      .mm__viewport {
         overflow: hidden;
         width: 100%;
         flex: 1;
@@ -243,15 +250,39 @@
         color: var(--ink-soft);
       }
 
-      /* slide control — sits roughly two-thirds down the screen */
-      .mm__control {
-        margin-top: clamp(16px, 2.5vh, 28px);
-        padding-top: clamp(16px, 2.5vh, 28px);
-        border-top: 1px solid var(--ink-line);
+      /* side navigation arrows */
+      .mm__arrow {
+        appearance: none;
         flex: none;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--ink-line);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--ink);
+        font-size: 1.1rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: border-color 0.3s var(--ease), background 0.3s var(--ease),
+          opacity 0.3s var(--ease), transform 0.3s var(--ease);
+      }
+      .mm__arrow:hover:not(:disabled) {
+        border-color: var(--ink);
+        background: var(--hl-soft);
+        transform: scale(1.06);
+      }
+      .mm__arrow:disabled {
+        opacity: 0.25;
+        cursor: default;
+      }
+      .mm__arrow--prev {
+        margin-right: clamp(12px, 2vw, 24px);
+      }
+      .mm__arrow--next {
+        margin-left: clamp(12px, 2vw, 24px);
       }
 
-      /* heading lives below the slider, filling the lower third */
+      /* heading below the carousel */
       .mm__foot {
         flex: none;
         min-height: 14vh;
@@ -267,90 +298,6 @@
         color: var(--ink);
         text-transform: lowercase;
       }
-      .mm__steps {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 18px;
-      }
-      .mm__step {
-        appearance: none;
-        background: none;
-        border: 0;
-        cursor: pointer;
-        font-family: var(--font-mono);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        font-size: clamp(10px, 1.1vw, 12px);
-        color: var(--ink-faint);
-        padding: 0;
-        text-align: left;
-        transition: color 0.3s var(--ease);
-        flex: 1;
-      }
-      .mm__step:nth-child(2) {
-        text-align: center;
-      }
-      .mm__step:last-child {
-        text-align: right;
-      }
-      .mm__step.is-active {
-        color: var(--ink);
-      }
-
-      .mm__slider-wrap {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-      }
-      .mm__range {
-        -webkit-appearance: none;
-        appearance: none;
-        flex: 1;
-        height: 4px;
-        border-radius: 999px;
-        background: linear-gradient(
-          to right,
-          var(--ink) 0%,
-          var(--ink) var(--fill, 0%),
-          var(--ink-line) var(--fill, 0%),
-          var(--ink-line) 100%
-        );
-        outline: none;
-        cursor: grab;
-      }
-      .mm__range:active {
-        cursor: grabbing;
-      }
-      .mm__range::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: var(--hl);
-        border: 2px solid var(--ink);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-        cursor: grab;
-      }
-      .mm__range::-moz-range-thumb {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: var(--hl);
-        border: 2px solid var(--ink);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-        cursor: grab;
-      }
-      .mm__slider-hint {
-        white-space: nowrap;
-        color: var(--ink-faint);
-        transition: opacity 0.4s var(--ease);
-      }
-      .mm.is-engaged .mm__slider-hint {
-        opacity: 0;
-      }
 
       @media (max-width: 720px) {
         .mm__panel-grid {
@@ -359,8 +306,16 @@
         .mm__media {
           max-width: 300px;
         }
-        .mm__slider-hint {
-          display: none;
+        .mm__arrow {
+          width: 36px;
+          height: 36px;
+          font-size: 0.95rem;
+        }
+        .mm__arrow--prev {
+          margin-right: 8px;
+        }
+        .mm__arrow--next {
+          margin-left: 8px;
         }
       }
     </style>
@@ -369,77 +324,68 @@
     <main class="mm" id="mm">
       <a class="mm__back mono" href="index.html">← back to radical_prototypes</a>
 
-      <div class="mm__viewport">
-        <div class="mm__track" id="mm-track">
-          <!-- PART 1 — DAY 0 -->
-          <section class="mm__panel" aria-label="Day 0 — Hyper-Personalized Experience">
-            <span class="mm__stage-tag mono">Day 0</span>
-            <h2 class="mm__panel-title mm__panel-title--future">Hyper-Personalized Experienced</h2>
-            <div class="mm__gallery mm__gallery--seq">
-              <figure class="mm__shot">
-                <img src="content/WALK-IN BODY SCAN (1).png" alt="Walk-in body scan" />
-                <figcaption class="mono">walk-in body scan</figcaption>
-              </figure>
-              <figure class="mm__shot">
-                <img src="content/MORPHABLE SURFACE.png" alt="Morphable surface" />
-                <figcaption class="mono">morphable surface</figcaption>
-              </figure>
-              <figure class="mm__shot">
-                <img src="content/SPRAY-ON WEAR.png" alt="Spray-on wear" />
-                <figcaption class="mono">spray-on wear</figcaption>
-              </figure>
-            </div>
-          </section>
+      <div class="mm__carousel">
+        <button
+          class="mm__arrow mm__arrow--prev"
+          id="mm-prev"
+          type="button"
+          aria-label="Previous section"
+          disabled
+        >
+          ←
+        </button>
 
-          <!-- PART 2 — DAY 1 & BEYOND -->
-          <section class="mm__panel" aria-label="Day 1 and beyond — Research Timeline">
-            <h2 class="mm__panel-title mm__panel-title--future">Commercialization Timeline</h2>
-            <div class="mm__timeline-img">
-              <img src="content/research_timeline.png" alt="Morphable Mannequin research timeline" />
-            </div>
-          </section>
+        <div class="mm__viewport">
+          <div class="mm__track" id="mm-track">
+            <!-- PART 1 — OUR PROPOSAL -->
+            <section class="mm__panel" aria-label="Our proposal">
+              <h2 class="mm__panel-title mm__panel-title--future">Hyper-Personalized Experienced</h2>
+              <div class="mm__gallery mm__gallery--seq">
+                <figure class="mm__shot">
+                  <img src="content/WALK-IN BODY SCAN (1).png" alt="Walk-in body scan" />
+                  <figcaption class="mono">walk-in body scan</figcaption>
+                </figure>
+                <figure class="mm__shot">
+                  <img src="content/MORPHABLE SURFACE.png" alt="Morphable surface" />
+                  <figcaption class="mono">morphable surface</figcaption>
+                </figure>
+                <figure class="mm__shot">
+                  <img src="content/SPRAY-ON WEAR.png" alt="Spray-on wear" />
+                  <figcaption class="mono">spray-on wear</figcaption>
+                </figure>
+              </div>
+            </section>
 
-          <!-- PART 3 — FUTURE VISION -->
-          <section class="mm__panel" aria-label="Future Vision">
-            <h2 class="mm__panel-title mm__panel-title--future">Future Vision</h2>
+            <!-- PART 2 — VISION -->
+            <section class="mm__panel" aria-label="Vision">
+              <h2 class="mm__panel-title mm__panel-title--future">Future Vision</h2>
 
-            <div class="mm__gallery">
-              <figure class="mm__shot">
-                <img src="content/concept_video.gif" alt="Concept video" />
-                <figcaption class="mono">concept video</figcaption>
-              </figure>
-              <figure class="mm__shot">
-                <img src="content/future.png" alt="Future application" />
-                <figcaption class="mono">future</figcaption>
-              </figure>
-              <figure class="mm__shot">
-                <img src="content/instore.png" alt="In-store experience" />
-                <figcaption class="mono">in-store</figcaption>
-              </figure>
-            </div>
-          </section>
+              <div class="mm__gallery">
+                <figure class="mm__shot">
+                  <img src="content/concept_video.gif" alt="Concept video" />
+                  <figcaption class="mono">concept video</figcaption>
+                </figure>
+                <figure class="mm__shot">
+                  <img src="content/future.png" alt="Future application" />
+                  <figcaption class="mono">future</figcaption>
+                </figure>
+                <figure class="mm__shot">
+                  <img src="content/instore.png" alt="In-store experience" />
+                  <figcaption class="mono">in-store</figcaption>
+                </figure>
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
 
-      <div class="mm__control">
-        <div class="mm__steps">
-          <button class="mm__step is-active" data-step="0" type="button">Day 0 — Current</button>
-          <button class="mm__step" data-step="1" type="button">Day 1 &amp; Beyond</button>
-          <button class="mm__step" data-step="2" type="button">Future Vision</button>
-        </div>
-        <div class="mm__slider-wrap">
-          <input
-            id="mm-slider"
-            class="mm__range"
-            type="range"
-            min="0"
-            max="2"
-            step="0.001"
-            value="0"
-            aria-label="Slide to know more"
-          />
-          <span class="mm__slider-hint mono">slide to know more →</span>
-        </div>
+        <button
+          class="mm__arrow mm__arrow--next"
+          id="mm-next"
+          type="button"
+          aria-label="Next section"
+        >
+          →
+        </button>
       </div>
 
       <div class="mm__foot">
@@ -449,55 +395,23 @@
 
     <script>
       (() => {
-        const mm = document.getElementById("mm");
         const track = document.getElementById("mm-track");
-        const slider = document.getElementById("mm-slider");
-        const steps = Array.from(document.querySelectorAll(".mm__step"));
-        const MAX = 2;
+        const prev = document.getElementById("mm-prev");
+        const next = document.getElementById("mm-next");
+        const MAX = 1;
+        let index = 0;
 
-        const setActive = (v) => {
-          const nearest = Math.round(v);
-          steps.forEach((s, i) => s.classList.toggle("is-active", i === nearest));
+        const goTo = (i) => {
+          index = Math.max(0, Math.min(MAX, i));
+          track.style.transform = `translateX(${-index * 100}%)`;
+          prev.disabled = index === 0;
+          next.disabled = index === MAX;
         };
 
-        const render = (v) => {
-          track.style.transform = `translateX(${(-v * 100) / 1}%)`;
-          slider.style.setProperty("--fill", `${(v / MAX) * 100}%`);
-          setActive(v);
-        };
+        prev.addEventListener("click", () => goTo(index - 1));
+        next.addEventListener("click", () => goTo(index + 1));
 
-        const goTo = (v, smooth) => {
-          track.style.transition = smooth ? "" : "none";
-          slider.value = String(v);
-          render(v);
-        };
-
-        // live drag — follow the thumb, no transition for 1:1 feel
-        slider.addEventListener("input", () => {
-          mm.classList.add("is-engaged");
-          track.style.transition = "none";
-          render(parseFloat(slider.value));
-        });
-
-        // release — snap to the nearest of the three parts
-        const snap = () => {
-          const v = Math.round(parseFloat(slider.value));
-          track.style.transition = "";
-          goTo(v, true);
-        };
-        slider.addEventListener("change", snap);
-        slider.addEventListener("pointerup", snap);
-        slider.addEventListener("keyup", snap);
-
-        // clicking a step label jumps to that part
-        steps.forEach((s) => {
-          s.addEventListener("click", () => {
-            mm.classList.add("is-engaged");
-            goTo(parseInt(s.dataset.step, 10), true);
-          });
-        });
-
-        render(0);
+        goTo(0);
       })();
     </script>
   </body>

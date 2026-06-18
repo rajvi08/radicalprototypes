@@ -60,6 +60,18 @@
             <span class="sidenav__label">Prototypes</span>
           </a>
         </li>
+        <li>
+          <a href="#scene-founders" class="sidenav__link" aria-label="Founders">
+            <span class="sidenav__dot"></span>
+            <span class="sidenav__label">Founders</span>
+          </a>
+        </li>
+        <li>
+          <a href="#scene-contact" class="sidenav__link" aria-label="Contact">
+            <span class="sidenav__dot"></span>
+            <span class="sidenav__label">Contact</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
@@ -167,44 +179,147 @@
         </div>
       </section>
 
+      <!-- ============================== FOUNDERS ============================== -->
+      <section class="founders" id="scene-founders">
+        <span class="founders__kicker mono">founders</span>
+        <h2 class="founders__title"><span class="em">building across 2 metropolitan cities</span></h2>
+        <p class="founders__note">
+          radical_prototypes operates between New York and Pune.
+        </p>
+
+        <div class="worldmap" id="worldmap">
+          <canvas class="worldmap__canvas" id="worldmap-canvas"></canvas>
+
+          <div class="worldmap__pin worldmap__pin--nyc" style="left: 29.4%; top: 27.4%">
+            <div class="worldmap__photo-wrap" tabindex="0">
+              <span class="worldmap__pulse" aria-hidden="true"></span>
+              <img
+                class="worldmap__photo"
+                src="content/Rajvi Ranjit Patil.jpeg"
+                alt="Rajvi Patil"
+              />
+            </div>
+            <div class="worldmap__info">
+              <span class="worldmap__name">Rajvi Patil · CEO</span>
+              <span class="worldmap__city mono">NYC, US</span>
+              <p class="worldmap__bio">
+                Leads technology development, intellectual property, and system
+                execution from New York City, driving the translation of
+                research and emerging technologies into deployable products and
+                ventures.
+              </p>
+            </div>
+          </div>
+
+          <div class="worldmap__pin worldmap__pin--pune" style="left: 70.5%; top: 39.7%">
+            <div class="worldmap__photo-wrap" tabindex="0">
+              <span class="worldmap__pulse" aria-hidden="true"></span>
+              <img
+                class="worldmap__photo"
+                src="content/Pranav Ranjit Patil.jpeg"
+                alt="Pranav Patil"
+              />
+            </div>
+            <div class="worldmap__info">
+              <span class="worldmap__name">Pranav Patil · COO</span>
+              <span class="worldmap__city mono">Pune, India</span>
+              <p class="worldmap__bio">
+                Based in India, oversees operations, financial planning, and
+                strategic growth, ensuring the efficient execution and
+                long-term sustainability of the organization.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== CONTACT ============================== -->
+      <section class="contact" id="scene-contact">
+        <p class="contact__lead">
+          Interested in our research, technologies, or their potential
+          applications? Whether you're exploring future possibilities or seeking
+          collaboration opportunities, we'd love to hear from you.
+        </p>
+        <p class="contact__email mono">
+          Contact:
+          <a href="mailto:rajvi@radicalprototypes.com">rajvi@radicalprototypes.com</a>
+        </p>
+      </section>
+
       <!-- ============================== FOOTER ============================== -->
       <footer class="footer mono">
-          <div>© 2026 radical_prototypes · speculative systems</div>
-          <div class="contact-links" aria-label="Contact">
-            <a
-              class="contact-links__btn"
-              href="https://www.linkedin.com/in/rajvi-patil-791960232"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn profile"
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                <path
-                  fill="currentColor"
-                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-                />
-              </svg>
-            </a>
-            <a
-              class="contact-links__btn"
-              href="mailto:rajvi@radicalprototype.com"
-              aria-label="Send email"
-            >
-              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M4 7h16v10H4V7zm0 0l8 6 8-6"
-                />
-              </svg>
-            </a>
-          </div>
+        <div>© 2026 radical_prototypes · speculative systems</div>
       </footer>
     </main>
 
     <script src="script.js"></script>
+    <script>
+      // dotted world map — generated from a low-res land mask
+      (function () {
+        const cv = document.getElementById("worldmap-canvas");
+        if (!cv) return;
+        const ctx = cv.getContext("2d");
+        const W = 64,
+          H = 32;
+        // land cells per row as [startCol, endCol] ranges
+        const LAND = {
+          1: [[13, 19], [24, 27], [42, 54]],
+          2: [[6, 21], [23, 28], [36, 58]],
+          3: [[3, 21], [24, 28], [31, 33], [36, 61]],
+          4: [[3, 21], [24, 27], [29, 34], [36, 62]],
+          5: [[3, 21], [25, 27], [28, 34], [36, 62]],
+          6: [[4, 21], [28, 38], [40, 63]],
+          7: [[5, 21], [28, 39], [40, 63]],
+          8: [[6, 20], [28, 38], [40, 63]],
+          9: [[7, 19], [27, 40], [41, 44], [45, 62]],
+          10: [[9, 17], [27, 40], [41, 47], [48, 60]],
+          11: [[12, 17], [28, 40], [41, 43], [44, 47], [48, 58]],
+          12: [[14, 17], [18, 23], [28, 40], [44, 47], [49, 57]],
+          13: [[17, 24], [29, 40], [44, 46], [50, 57]],
+          14: [[17, 25], [29, 41], [50, 58]],
+          15: [[17, 25], [30, 41], [51, 58]],
+          16: [[17, 25], [31, 40], [51, 58]],
+          17: [[17, 24], [32, 39], [52, 57]],
+          18: [[18, 23], [32, 38], [52, 59]],
+          19: [[18, 22], [33, 37], [52, 59]],
+          20: [[18, 22], [33, 37], [53, 58]],
+          21: [[19, 21], [34, 36], [54, 57]],
+          22: [[19, 21], [55, 56]],
+          23: [[19, 20]],
+          24: [[19, 19]],
+        };
+
+        function draw() {
+          const rect = cv.getBoundingClientRect();
+          if (!rect.width) return;
+          const dpr = Math.min(2, window.devicePixelRatio || 1);
+          cv.width = Math.round(rect.width * dpr);
+          cv.height = Math.round(rect.height * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.clearRect(0, 0, rect.width, rect.height);
+          const cellW = rect.width / W;
+          const cellH = rect.height / H;
+          const r = Math.max(0.45, Math.min(cellW, cellH) * 0.2);
+          ctx.fillStyle = "rgba(63, 68, 74, 0.5)";
+          for (const row in LAND) {
+            const y = (parseInt(row, 10) + 0.5) * cellH;
+            LAND[row].forEach(([a, b]) => {
+              for (let c = a; c <= b; c++) {
+                ctx.beginPath();
+                ctx.arc((c + 0.5) * cellW, y, r, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            });
+          }
+        }
+
+        draw();
+        let t;
+        addEventListener("resize", () => {
+          clearTimeout(t);
+          t = setTimeout(draw, 150);
+        });
+      })();
+    </script>
   </body>
 </html>
