@@ -1,0 +1,7 @@
+{
+  "name": "radical-prototypes",
+  "private": true,
+  "scripts": {
+    "preview": "node preview.js"
+  }
+}

@@ -8,8 +8,8 @@
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const INK = "91, 147, 214";
-  const YELLOW = "255, 230, 60";
+  const INK = "40, 40, 40";
+  const YELLOW = "70, 70, 70";
 
   /* =======================================================
      CUSTOM CURSOR
@@ -44,7 +44,7 @@
     requestAnimationFrame(tick);
 
     const sel =
-      "a, button, .domain-label, .sidenav__link, .hero__enter, .contact-links__btn, .detail__back";
+      "a, button, .domain-label, .sidenav__link, .hero__enter, .contact-links__btn, .detail__back, model-viewer";
     addEventListener("mouseover", (e) => {
       if (e.target.closest(sel)) document.body.classList.add("is-hover");
     });
@@ -133,14 +133,14 @@
     return Math.min(13000, Math.max(6500, Math.floor((W * H) / 150)));
   }
 
-  // monochrome black blend: interpolate each particle between light gray & black
-  const MONO_LIGHT = [170, 170, 170];
-  const MONO_DARK = [12, 12, 12];
+  // grayscale particle field
+  const GRAY_LIGHT = [110, 110, 110];
+  const GRAY_DARK = [25, 25, 25];
   function monoShade() {
     const t = Math.pow(Math.random(), 0.85);
-    const r = Math.round(MONO_LIGHT[0] + (MONO_DARK[0] - MONO_LIGHT[0]) * t);
-    const g = Math.round(MONO_LIGHT[1] + (MONO_DARK[1] - MONO_LIGHT[1]) * t);
-    const b = Math.round(MONO_LIGHT[2] + (MONO_DARK[2] - MONO_LIGHT[2]) * t);
+    const r = Math.round(GRAY_LIGHT[0] + (GRAY_DARK[0] - GRAY_LIGHT[0]) * t);
+    const g = Math.round(GRAY_LIGHT[1] + (GRAY_DARK[1] - GRAY_LIGHT[1]) * t);
+    const b = Math.round(GRAY_LIGHT[2] + (GRAY_DARK[2] - GRAY_LIGHT[2]) * t);
     return r + ", " + g + ", " + b;
   }
 
@@ -162,8 +162,8 @@
         struct: -1, // network structure index
         ox: 0, // orbit offset
         oy: 0,
-        a: 0.35 + Math.random() * 0.3, // base alpha
-        col: monoShade(), // per-particle gray→black (monochrome blend)
+        a: 0.24 + Math.random() * 0.16,
+        col: monoShade(), // per-particle grayscale blend
       };
     }
   }
@@ -205,7 +205,7 @@
     o.textAlign = "center";
     o.textBaseline = "middle";
     const base = 100;
-    o.font = `600 ${base}px "Electromagnetic Lungs", "Space Grotesk", sans-serif`;
+    o.font = `400 ${base}px "Manolo Mono", monospace`;
     let widest = 1;
     lines.forEach((l) => {
       widest = Math.max(widest, o.measureText(l).width);
@@ -221,7 +221,7 @@
     }
     const lineH = fs * 1.08;
 
-    o.font = `600 ${fs}px "Electromagnetic Lungs", "Space Grotesk", sans-serif`;
+    o.font = `400 ${fs}px "Manolo Mono", monospace`;
     o.fillStyle = "#000";
     const startY = H / 2 - ((lines.length - 1) * lineH) / 2;
     lines.forEach((l, i) => o.fillText(l, W / 2, startY + i * lineH));
@@ -271,7 +271,7 @@
       } else {
         // surplus agents drift faintly behind
         p.hasTarget = false;
-        p.a = 0.16;
+        p.a = 0.22;
       }
     }
   }
@@ -281,7 +281,7 @@
       const p = particles[i];
       p.hasTarget = false;
       p.struct = -1;
-      p.a = 0.28 + (i % 7) * 0.02;
+      p.a = 0.2 + (i % 6) * 0.022;
     }
   }
 
@@ -476,7 +476,7 @@
         p.curAlpha = p.a;
       }
 
-      const sz = p.hasTarget ? 1.7 : 1.2;
+      const sz = p.hasTarget ? 1.7 : 1.35;
       ctx.fillStyle = `rgba(${p.col}, ${p.curAlpha})`;
       ctx.fillRect(p.x - sz / 2, p.y - sz / 2, sz, sz);
     }
@@ -574,34 +574,16 @@
   const sceneEls = [
     { id: "hero", el: document.getElementById("scene-hero") },
     { id: "philosophy", el: document.getElementById("scene-philosophy") },
+    { id: "bespoke", el: document.getElementById("scene-bespoke") },
     { id: "domains", el: document.getElementById("scene-domains") },
     { id: "status", el: document.getElementById("scene-status") },
   ].filter((s) => s.el);
 
-  const PHRASES = [
-    ["WHAT IS A", "RADICAL", "PROTOTYPE?"],
-    null, // stage 1 = definition (HTML), particles drift
-    ["not a product."],
-    ["not a prediction."],
-    ["a test of", "a possible future."],
-  ];
-
   function applyState(force) {
     if (!ctx) return;
-    if (currentScene === "hero" || currentScene === "status") {
+    if (currentScene === "hero" || currentScene === "status" || currentScene === "philosophy") {
       if (force || lastApplied !== currentScene) assignFree();
-    } else if (currentScene === "philosophy") {
-      const stage = currentStage;
-      if (force || lastApplied !== "philosophy:" + stage) {
-        const phrase = PHRASES[stage];
-        if (phrase) assignText(phrase);
-        else assignFree();
-      }
-      lastApplied = "philosophy:" + stage;
-      lastAppliedScene = currentScene;
-      return;
     } else if (currentScene === "domains") {
-      // particles drift freely instead of assembling into a graph/network
       if (force || lastApplied !== currentScene) assignFree();
     }
     lastApplied = currentScene;
@@ -625,7 +607,6 @@
     if (stage === currentStage) return;
     currentStage = stage;
     document.body.dataset.stage = String(stage);
-    if (currentScene === "philosophy") applyState(false);
   }
 
   function onScroll() {
@@ -640,14 +621,6 @@
       }
     }
     setScene(active.id);
-
-    if (active.id === "philosophy") {
-      const r = active.el.getBoundingClientRect();
-      const total = active.el.offsetHeight - vh;
-      const progress = clamp(-r.top / Math.max(1, total), 0, 0.9999);
-      const stage = Math.floor(progress * PHRASES.length);
-      setStage(Math.min(PHRASES.length - 1, stage));
-    }
   }
 
   function clamp(v, a, b) {
@@ -714,12 +687,12 @@
     if (document.fonts && document.fonts.ready) {
       const resampleFonts = () => {
         sampleCache.clear();
-        if (currentScene === "philosophy") applyState(true);
+        if (currentScene === "hero") applyState(true);
       };
       // explicitly request the display font so the granule text picks it up
       if (document.fonts.load) {
         document.fonts
-          .load('600 100px "Electromagnetic Lungs"')
+          .load('400 100px "Manolo Mono"')
           .then(resampleFonts)
           .catch(() => {});
       }
