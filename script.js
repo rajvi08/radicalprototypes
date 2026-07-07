@@ -51,6 +51,16 @@
     addEventListener("mouseout", (e) => {
       if (e.target.closest(sel)) document.body.classList.remove("is-hover");
     });
+
+    const founders = document.getElementById("scene-founders");
+    if (founders) {
+      founders.addEventListener("mouseenter", () => {
+        document.body.classList.add("cursor--founders");
+      });
+      founders.addEventListener("mouseleave", () => {
+        document.body.classList.remove("cursor--founders");
+      });
+    }
   })();
 
   /* =======================================================
@@ -576,6 +586,7 @@
     { id: "philosophy", el: document.getElementById("scene-philosophy") },
     { id: "bespoke", el: document.getElementById("scene-bespoke") },
     { id: "domains", el: document.getElementById("scene-domains") },
+    { id: "founders", el: document.getElementById("scene-founders") },
     { id: "status", el: document.getElementById("scene-status") },
   ].filter((s) => s.el);
 

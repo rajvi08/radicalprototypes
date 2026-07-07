@@ -13,6 +13,14 @@
   --grid-line: rgba(28, 28, 28, 0.1);
   --grid-line-light: rgba(255, 255, 255, 0.07);
 
+  --caption-gray-gradient: linear-gradient(
+    115deg,
+    #8a8a8a 0%,
+    #5c5c5c 35%,
+    #2e2e2e 68%,
+    #4a4a4a 100%
+  );
+
   --hl: #0a0a0a;
   --hl-soft: rgba(10, 10, 10, 0.12);
   --hl-glow: rgba(10, 10, 10, 0.28);
@@ -158,6 +166,11 @@ body {
 body[data-scene="hero"],
 body[data-scene="bespoke"] {
   --cursor-triangle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 44'%3E%3Cpolygon points='24,3 3,41 45,41' fill='none' stroke='%23ffffff' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+body[data-scene="founders"],
+body.cursor--founders {
+  --cursor-triangle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 44'%3E%3Cpolygon points='24,3 3,41 45,41' fill='none' stroke='%230a0a0a' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
 .cursor__dot {
@@ -538,30 +551,35 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
 .scroll-video__caption {
   max-width: 12ch;
   font-family: var(--font-display);
-  font-size: clamp(38px, 6.2vw, 96px);
+  font-size: clamp(32px, 5.4vw, 80px);
   font-weight: 700;
   font-style: italic;
   line-height: 0.92;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: var(--ink);
+}
+
+.scanning__caption-line,
+.scroll-video__caption-line {
+  display: block;
+  background-image: var(--caption-gray-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .scanning__caption {
   position: relative;
   z-index: 2;
   flex: 0 0 auto;
-  margin: 0 0 0 clamp(-112px, -10vw, -210px);
+  margin: 0 0 0 clamp(-72px, -7vw, -160px);
 }
 
 .scanning__accent,
 .scroll-video__accent {
-  color: #fff;
-}
-
-.scanning__caption-line,
-.scroll-video__caption-line {
-  display: block;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .scanning__caption-line + .scanning__caption-line,
@@ -575,14 +593,10 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
 .scroll-video {
   position: relative;
   z-index: 1;
-  height: var(--scroll-video-length, 320vh);
-  overscroll-behavior: none;
 }
 
 .scroll-video__sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -595,6 +609,7 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
   align-items: center;
   justify-content: flex-end;
   width: 100%;
+  overflow: visible;
 }
 
 .scroll-video__frame {
@@ -610,18 +625,20 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
 .scroll-video__caption {
   position: absolute;
   top: 50%;
-  left: clamp(0px, 1vw, 12px);
+  left: clamp(-380px, -32vw, -200px);
   right: auto;
   transform: translateY(-50%);
   z-index: 3;
   margin: 0;
+  max-width: none;
   text-align: left;
   pointer-events: none;
-  color: var(--ink);
 }
 
 .scroll-video__media {
   display: block;
+  position: relative;
+  z-index: 1;
   width: min(58vw, 920px);
   height: min(86vh, 960px);
   max-height: min(86vh, 960px);
@@ -662,24 +679,13 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
   }
 
   .scanning__caption {
-    font-size: clamp(32px, 8vw, 56px);
+    font-size: clamp(28px, 7vw, 48px);
   }
 
   .scroll-video__caption {
     position: static;
     transform: none;
-    font-size: clamp(32px, 8vw, 56px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-video {
-    height: auto;
-  }
-
-  .scroll-video__sticky {
-    position: static;
-    height: auto;
+    font-size: clamp(28px, 7vw, 48px);
   }
 }
 
@@ -995,7 +1001,7 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
   justify-content: center;
   background: var(--hl);
   color: #fff;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .scene--bespoke::before {
@@ -1019,7 +1025,7 @@ body[data-scene="bespoke"] .sidenav__link.is-active .sidenav__dot {
   width: 100%;
   max-width: 1180px;
   margin: 0 auto;
-  padding: clamp(80px, 14vh, 140px) var(--gutter);
+  padding: clamp(80px, 14vh, 140px) var(--gutter) clamp(96px, 16vh, 160px);
 }
 
 .bespoke__layout {
@@ -1788,6 +1794,7 @@ body.domain-open .domains__labels {
   max-width: 1280px;
   margin: 0 auto;
   padding: clamp(80px, 14vh, 160px) var(--gutter) clamp(20px, 4vh, 48px);
+  pointer-events: auto;
 }
 
 .founders__kicker {
