@@ -215,7 +215,7 @@
     o.textAlign = "center";
     o.textBaseline = "middle";
     const base = 100;
-    o.font = `400 ${base}px "Manolo Mono", monospace`;
+    o.font = `400 ${base}px Arial, Helvetica, sans-serif`;
     let widest = 1;
     lines.forEach((l) => {
       widest = Math.max(widest, o.measureText(l).width);
@@ -231,7 +231,7 @@
     }
     const lineH = fs * 1.08;
 
-    o.font = `400 ${fs}px "Manolo Mono", monospace`;
+    o.font = `400 ${fs}px Arial, Helvetica, sans-serif`;
     o.fillStyle = "#000";
     const startY = H / 2 - ((lines.length - 1) * lineH) / 2;
     lines.forEach((l, i) => o.fillText(l, W / 2, startY + i * lineH));
@@ -703,7 +703,7 @@
       // explicitly request the display font so the granule text picks it up
       if (document.fonts.load) {
         document.fonts
-          .load('400 100px "Manolo Mono"')
+          .load("400 100px Arial")
           .then(resampleFonts)
           .catch(() => {});
       }
