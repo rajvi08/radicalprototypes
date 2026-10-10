@@ -55,33 +55,166 @@
       }
 
       main {
-        position: relative;
         flex: 1;
         min-height: 0;
         overflow: hidden;
         background: #f7f7f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 28px;
       }
 
-      .logo-view {
-        position: absolute;
-        inset: 0;
+      .stage {
+        width: 880px;
+        height: 360px;
+      }
+
+      .frames {
+        width: 880px;
+        height: 360px;
+        display: flex;
+        gap: 18px;
+      }
+
+      .frames[hidden] {
+        display: none !important;
+      }
+
+      .fill {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: #d0d0d0;
+        overflow: hidden;
+        cursor: pointer;
+        text-align: left;
+        font: inherit;
+        color: inherit;
+      }
+
+      .fill:focus-visible {
+        outline: 1px solid #111111;
+        outline-offset: 2px;
+      }
+
+      .fill img {
+        display: block;
         width: 100%;
         height: 100%;
-        display: block;
+        object-fit: cover;
+        object-position: center;
       }
 
-      .logo-soft {
+      .card__veil {
         position: absolute;
-        left: 50%;
-        top: 47%;
-        transform: translate(-50%, -50%);
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 6px;
+        padding: 18px 16px;
+        background: rgba(17, 17, 17, 0.62);
+        color: #ffffff;
+        font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+        font-weight: 200;
+        opacity: 0;
         pointer-events: none;
-        opacity: 1;
-        transition: opacity 250ms ease;
+        transition: opacity 180ms ease;
       }
 
-      .logo-view:hover ~ .logo-soft {
-        opacity: 0;
+      .fill:hover .card__veil,
+      .fill:focus-visible .card__veil {
+        opacity: 1;
+      }
+
+      .card__title,
+      .card__line {
+        margin: 0;
+      }
+
+      .card__title {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.15;
+      }
+
+      .card__line {
+        font-size: 14px;
+        line-height: 1.3;
+      }
+
+      .detail {
+        box-sizing: border-box;
+        width: 880px;
+        height: 360px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 28px 36px 22px;
+        overflow: auto;
+        background: #e6e6e6;
+        border: 1px solid #c8c8c8;
+        color: #1a1a1a;
+        font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+        font-weight: 200;
+        position: relative;
+      }
+
+      .detail[hidden] {
+        display: none !important;
+      }
+
+      .detail__close {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #3a3a3a;
+        font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+        font-weight: 200;
+        font-size: 14px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .detail__close:hover,
+      .detail__close:active,
+      .detail__close:focus-visible {
+        color: #000000;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .detail__title {
+        margin: 0;
+        padding-right: 48px;
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .detail__desc {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.45;
+      }
+
+      .detail__note {
+        margin: auto 0 0;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .detail__mail {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
       }
 
       .page-foot {
@@ -187,266 +320,56 @@
     <header class="site-header">
       <a href="index.html"><img src="assets/logontypo.png" alt="RADICAL PROTOTYPES" /></a>
     </header>
-    <main></main>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
-        }
-      }
-    </script>
-    <script type="module">
-      import * as THREE from "three";
-      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-      import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-
-      const stage = document.querySelector("main");
-      const canvas = document.createElement("canvas");
-      canvas.className = "logo-view";
-      canvas.setAttribute("aria-hidden", "true");
-      const soft = document.createElement("canvas");
-      soft.className = "logo-soft";
-      soft.setAttribute("aria-hidden", "true");
-      const softCtx = soft.getContext("2d");
-
-      let renderer;
-      try {
-        renderer = new THREE.WebGLRenderer({
-          canvas,
-          alpha: true,
-          antialias: true,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-
-      if (!renderer) {
-        canvas.remove();
-      } else {
-        renderer.setClearColor(0x000000, 0);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.05;
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
-        camera.position.set(0, 0, 4);
-
-        const pmrem = new THREE.PMREMGenerator(renderer);
-        const room = new RoomEnvironment();
-        const bluePanel = new THREE.Mesh(
-          new THREE.PlaneGeometry(9, 12),
-          new THREE.MeshBasicMaterial({ color: 0x4f97ff, side: THREE.DoubleSide })
-        );
-        bluePanel.position.set(8, 14, 2);
-        bluePanel.lookAt(0, 12, 0);
-        room.add(bluePanel);
-        const envMap = pmrem.fromScene(room, 0.04).texture;
-        scene.environment = envMap;
-        pmrem.dispose();
-
-        const blueLight = new THREE.DirectionalLight(0x7eb6ff, 1.7);
-        blueLight.position.set(2.8, 1.15, 1.6);
-        scene.add(blueLight);
-
-        const chrome = new THREE.MeshPhysicalMaterial({
-          color: 0xe6e6e6,
-          metalness: 1,
-          roughness: 0.08,
-          envMap,
-          envMapIntensity: 1,
-        });
-
-        const pivot = new THREE.Group();
-        scene.add(pivot);
-
-        const TURN = 10;
-        const FOLLOW = 0.1;
-        let raf = 0;
-        let last = 0;
-        let steering = false;
-        const target = { x: 0, y: 0 };
-
-        canvas.addEventListener("pointerenter", () => {
-          steering = true;
-          target.x = pivot.rotation.x;
-          target.y = pivot.rotation.y;
-        });
-
-        canvas.addEventListener("pointerleave", () => {
-          steering = false;
-          last = 0;
-        });
-
-        canvas.addEventListener("pointermove", (event) => {
-          if (!steering) return;
-          target.y += event.movementX * 0.008;
-          target.x = Math.max(-0.45, Math.min(0.45, target.x + event.movementY * 0.003));
-        });
-
-        function syncSoft() {
-          const minDim = Math.min(stage.clientWidth, stage.clientHeight);
-          const logo = minDim * 0.62;
-          const cssW = Math.max(28, Math.round(logo * 0.11));
-          const cssH = Math.max(18, Math.round(logo * 0.07));
-          soft.style.width = cssW + "px";
-          soft.style.height = cssH + "px";
-          const dpr = renderer.getPixelRatio();
-          const nextW = Math.max(1, Math.round(cssW * dpr));
-          const nextH = Math.max(1, Math.round(cssH * dpr));
-          if (soft.width !== nextW || soft.height !== nextH) {
-            soft.width = nextW;
-            soft.height = nextH;
-          }
-        }
-
-        function paintSoft() {
-          const cssW = soft.clientWidth;
-          const cssH = soft.clientHeight;
-          if (!cssW || !cssH || !canvas.width || !canvas.height) return;
-          const dpr = renderer.getPixelRatio();
-          const sw = Math.round(cssW * dpr);
-          const sh = Math.round(cssH * dpr);
-          const pad = Math.round(8 * dpr);
-          const sx = Math.round((canvas.width - sw) / 2) - pad;
-          const sy = Math.round(canvas.height * 0.47 - sh / 2) - pad;
-          softCtx.setTransform(1, 0, 0, 1, 0, 0);
-          softCtx.clearRect(0, 0, soft.width, soft.height);
-          softCtx.filter = "blur(" + 2 * dpr + "px)";
-          softCtx.drawImage(
-            canvas,
-            sx,
-            sy,
-            sw + pad * 2,
-            sh + pad * 2,
-            -pad,
-            -pad,
-            soft.width + pad * 2,
-            soft.height + pad * 2
-          );
-          softCtx.filter = "none";
-          softCtx.save();
-          softCtx.globalCompositeOperation = "destination-in";
-          softCtx.translate(soft.width / 2, soft.height / 2);
-          softCtx.scale(1, soft.height / soft.width);
-          const radius = soft.width / 2;
-          const fade = softCtx.createRadialGradient(0, 0, radius * 0.12, 0, 0, radius);
-          fade.addColorStop(0, "rgba(0,0,0,1)");
-          fade.addColorStop(0.58, "rgba(0,0,0,0.8)");
-          fade.addColorStop(1, "rgba(0,0,0,0)");
-          softCtx.fillStyle = fade;
-          softCtx.beginPath();
-          softCtx.arc(0, 0, radius, 0, Math.PI * 2);
-          softCtx.fill();
-          softCtx.restore();
-        }
-
-        function resize() {
-          const width = stage.clientWidth;
-          const height = stage.clientHeight;
-          if (!width || !height) return;
-          renderer.setSize(width, height, false);
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-          syncSoft();
-        }
-
-        function fit(model, maxDim) {
-          resize();
-          const distance = camera.position.z;
-          const vFov = THREE.MathUtils.degToRad(camera.fov);
-          const visibleH = 2 * Math.tan(vFov / 2) * distance;
-          const visibleW = visibleH * Math.max(camera.aspect, 0.01);
-          model.scale.setScalar((Math.min(visibleH, visibleW) * 0.62) / maxDim);
-        }
-
-        function frame(now) {
-          if (document.hidden) {
-            raf = 0;
-            return;
-          }
-          raf = requestAnimationFrame(frame);
-          const delta = last ? Math.min((now - last) / 1000, 0.05) : 0;
-          last = now;
-          if (!steering) {
-            pivot.rotation.y += delta * ((Math.PI * 2) / TURN);
-            target.x = pivot.rotation.x;
-            target.y = pivot.rotation.y;
-          } else {
-            const follow = 1 - Math.pow(1 - FOLLOW, delta * 60);
-            pivot.rotation.y += (target.y - pivot.rotation.y) * follow;
-            pivot.rotation.x += (target.x - pivot.rotation.x) * follow;
-          }
-          renderer.render(scene, camera);
-          if (!steering) paintSoft();
-        }
-
-        document.addEventListener("visibilitychange", () => {
-          if (document.hidden) {
-            if (raf) cancelAnimationFrame(raf);
-            raf = 0;
-            return;
-          }
-          last = 0;
-          if (!raf) raf = requestAnimationFrame(frame);
-        });
-
-        window.addEventListener("resize", () => {
-          const holder = pivot.children[0];
-          if (!holder || !holder.userData.maxDim) return;
-          fit(holder, holder.userData.maxDim);
-        });
-
-        const loader = new GLTFLoader();
-        loader.load(
-          "assets/base%20(4).glb",
-          (gltf) => {
-            const model = gltf.scene;
-            model.traverse((child) => {
-              if (!child.isMesh) return;
-              const previous = child.material;
-              child.material = chrome;
-              const materials = Array.isArray(previous) ? previous : [previous];
-              materials.forEach((material) => material && material.dispose());
-            });
-
-            model.position.set(0, 0, 0);
-            model.scale.set(1, 1, 1);
-            model.updateMatrixWorld(true);
-            const bounds = new THREE.Box3().setFromObject(model);
-            const size = bounds.getSize(new THREE.Vector3());
-            const center = bounds.getCenter(new THREE.Vector3());
-            model.position.sub(center);
-
-            const holder = new THREE.Group();
-            holder.userData.maxDim = Math.max(size.x, size.y, size.z) || 1;
-            holder.add(model);
-            pivot.add(holder);
-            stage.appendChild(canvas);
-            stage.appendChild(soft);
-            fit(holder, holder.userData.maxDim);
-            last = 0;
-            raf = requestAnimationFrame(frame);
-          },
-          undefined,
-          (error) => {
-            console.error(error);
-            if (raf) cancelAnimationFrame(raf);
-            canvas.remove();
-            chrome.dispose();
-            envMap.dispose();
-            renderer.dispose();
-          }
-        );
-      }
-    </script>
+    <main>
+      <div class="stage">
+        <div class="frames">
+          <button
+            type="button"
+            class="fill"
+            data-desc="Programmable materials explore how changes in geometry and structural configuration can alter a material system's macroscopic properties. By investigating the relationship between geometry, mechanical behaviour, and material response, we aim to develop adaptable structures with applications across multiple fields. Current research includes an ongoing collaboration with a New York City based company."
+          >
+            <img src="assets/materials.png" alt="" />
+            <span class="card__veil">
+              <span class="card__title">Programmable Materials</span>
+              <span class="card__line">Engineering material properties through geometric transformation.</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="fill"
+            data-desc="Modulon explores multifunctional, modular systems designed to enable closed-loop environments that reduce dependence on external resource supplies. Through adaptable, plug-and-play components, the research investigates how the built environment can support its own needs while enabling resources to circulate within interconnected systems. Current development includes a collaboration with a real estate company in Pune, India."
+          >
+            <img src="assets/modulon.png" alt="" />
+            <span class="card__veil">
+              <span class="card__title">Modulon</span>
+              <span class="card__line">Closed loop systems for buildings.</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="fill"
+            data-desc="Morphables investigates adaptive surfaces capable of changing their geometry in response to controlled actuation. The research explores the relationship between surface architecture, deformation mechanisms, and shape transformation to enable structures that can transition between different configurations. Intellectual property development is currently underway."
+          >
+            <img src="assets/mannquin.png" alt="" />
+            <span class="card__veil">
+              <span class="card__title">Morphables</span>
+              <span class="card__line">Shape changing surfaces</span>
+            </span>
+          </button>
+        </div>
+        <article class="detail" hidden>
+          <button type="button" class="detail__close">Close</button>
+          <h2 class="detail__title"></h2>
+          <p class="detail__desc"></p>
+          <p class="detail__note">Some aspects of our research are confidential and subject to intellectual property protections and non-disclosure agreements. For further technical details please <a class="detail__mail" href="mailto:hi@radicalprototypes.com">contact us via email</a>.</p>
+        </article>
+      </div>
+    </main>
     <footer class="page-foot">
       <div class="page-foot__wide">
         <nav class="page-foot__links" aria-label="Page">
           <a href="about.html">About</a>
-          <a href="prototypes.html">Prototypes</a>
+          <a href="prototypes.html" aria-current="page">Prototypes</a>
           <a href="contact.html">Contact</a>
         </nav>
       </div>
@@ -454,5 +377,36 @@
         <p class="page-foot__copy">Radical Prototypes © 2026</p>
       </div>
     </footer>
+    <script>
+      const frames = document.querySelector(".frames");
+      const detail = document.querySelector(".detail");
+      const detailTitle = detail.querySelector(".detail__title");
+      const detailDesc = detail.querySelector(".detail__desc");
+      const closeDetailButton = detail.querySelector(".detail__close");
+      let opener = null;
+
+      function openDetail(button) {
+        opener = button;
+        detailTitle.textContent = button.querySelector(".card__title").textContent;
+        detailDesc.textContent = button.dataset.desc;
+        frames.hidden = true;
+        detail.hidden = false;
+        closeDetailButton.focus();
+      }
+
+      function closeDetail() {
+        detail.hidden = true;
+        frames.hidden = false;
+        if (opener) opener.focus();
+      }
+
+      document.querySelectorAll(".fill").forEach((button) => {
+        button.addEventListener("click", () => openDetail(button));
+      });
+      closeDetailButton.addEventListener("click", closeDetail);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !detail.hidden) closeDetail();
+      });
+    </script>
   </body>
 </html>

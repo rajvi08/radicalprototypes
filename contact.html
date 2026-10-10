@@ -55,33 +55,98 @@
       }
 
       main {
-        position: relative;
         flex: 1;
         min-height: 0;
         overflow: hidden;
         background: #f7f7f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
       }
 
-      .logo-view {
+      .contact-row {
+        width: 880px;
+        max-width: 880px;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      .contact-copy {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        margin: 0;
+        font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+        font-weight: 200;
+        font-size: 21px;
+        line-height: 1.5;
+        color: #111111;
+      }
+
+      .contact-photo {
+        flex: 0 0 calc((880px - 36px) / 3);
+        width: calc((880px - 36px) / 3);
+        height: 360px;
+        position: relative;
+        overflow: hidden;
+        align-self: flex-start;
+      }
+
+      .contact-photo img {
         position: absolute;
         inset: 0;
+        display: block;
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .contact-copy p {
+        margin: 0;
+      }
+
+      .contact-copy .prose {
+        text-align: justify;
+      }
+
+      .contact-copy .ask {
+        font-weight: 700;
+      }
+
+      .contact-copy a {
+        color: #000000;
+        text-decoration: none;
+      }
+
+      .contact-copy a:hover,
+      .contact-copy a:focus-visible {
+        text-decoration: underline;
+      }
+
+      .contact-link {
+        align-self: flex-start;
+        margin-top: -4px;
+        display: inline-flex;
+        color: #1c1c1c;
+        line-height: 0;
+      }
+
+      .contact-copy .contact-link:hover,
+      .contact-copy .contact-link:focus-visible {
+        color: #000000;
+        text-decoration: none;
+      }
+
+      .contact-link svg {
         display: block;
-      }
-
-      .logo-soft {
-        position: absolute;
-        left: 50%;
-        top: 47%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        opacity: 1;
-        transition: opacity 250ms ease;
-      }
-
-      .logo-view:hover ~ .logo-soft {
-        opacity: 0;
+        width: 22px;
+        height: 22px;
       }
 
       .page-foot {
@@ -187,267 +252,40 @@
     <header class="site-header">
       <a href="index.html"><img src="assets/logontypo.png" alt="RADICAL PROTOTYPES" /></a>
     </header>
-    <main></main>
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
-          "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
-        }
-      }
-    </script>
-    <script type="module">
-      import * as THREE from "three";
-      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-      import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-
-      const stage = document.querySelector("main");
-      const canvas = document.createElement("canvas");
-      canvas.className = "logo-view";
-      canvas.setAttribute("aria-hidden", "true");
-      const soft = document.createElement("canvas");
-      soft.className = "logo-soft";
-      soft.setAttribute("aria-hidden", "true");
-      const softCtx = soft.getContext("2d");
-
-      let renderer;
-      try {
-        renderer = new THREE.WebGLRenderer({
-          canvas,
-          alpha: true,
-          antialias: true,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-
-      if (!renderer) {
-        canvas.remove();
-      } else {
-        renderer.setClearColor(0x000000, 0);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.05;
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
-        camera.position.set(0, 0, 4);
-
-        const pmrem = new THREE.PMREMGenerator(renderer);
-        const room = new RoomEnvironment();
-        const bluePanel = new THREE.Mesh(
-          new THREE.PlaneGeometry(9, 12),
-          new THREE.MeshBasicMaterial({ color: 0x4f97ff, side: THREE.DoubleSide })
-        );
-        bluePanel.position.set(8, 14, 2);
-        bluePanel.lookAt(0, 12, 0);
-        room.add(bluePanel);
-        const envMap = pmrem.fromScene(room, 0.04).texture;
-        scene.environment = envMap;
-        pmrem.dispose();
-
-        const blueLight = new THREE.DirectionalLight(0x7eb6ff, 1.7);
-        blueLight.position.set(2.8, 1.15, 1.6);
-        scene.add(blueLight);
-
-        const chrome = new THREE.MeshPhysicalMaterial({
-          color: 0xe6e6e6,
-          metalness: 1,
-          roughness: 0.08,
-          envMap,
-          envMapIntensity: 1,
-        });
-
-        const pivot = new THREE.Group();
-        scene.add(pivot);
-
-        const TURN = 10;
-        const FOLLOW = 0.1;
-        let raf = 0;
-        let last = 0;
-        let steering = false;
-        const target = { x: 0, y: 0 };
-
-        canvas.addEventListener("pointerenter", () => {
-          steering = true;
-          target.x = pivot.rotation.x;
-          target.y = pivot.rotation.y;
-        });
-
-        canvas.addEventListener("pointerleave", () => {
-          steering = false;
-          last = 0;
-        });
-
-        canvas.addEventListener("pointermove", (event) => {
-          if (!steering) return;
-          target.y += event.movementX * 0.008;
-          target.x = Math.max(-0.45, Math.min(0.45, target.x + event.movementY * 0.003));
-        });
-
-        function syncSoft() {
-          const minDim = Math.min(stage.clientWidth, stage.clientHeight);
-          const logo = minDim * 0.62;
-          const cssW = Math.max(28, Math.round(logo * 0.11));
-          const cssH = Math.max(18, Math.round(logo * 0.07));
-          soft.style.width = cssW + "px";
-          soft.style.height = cssH + "px";
-          const dpr = renderer.getPixelRatio();
-          const nextW = Math.max(1, Math.round(cssW * dpr));
-          const nextH = Math.max(1, Math.round(cssH * dpr));
-          if (soft.width !== nextW || soft.height !== nextH) {
-            soft.width = nextW;
-            soft.height = nextH;
-          }
-        }
-
-        function paintSoft() {
-          const cssW = soft.clientWidth;
-          const cssH = soft.clientHeight;
-          if (!cssW || !cssH || !canvas.width || !canvas.height) return;
-          const dpr = renderer.getPixelRatio();
-          const sw = Math.round(cssW * dpr);
-          const sh = Math.round(cssH * dpr);
-          const pad = Math.round(8 * dpr);
-          const sx = Math.round((canvas.width - sw) / 2) - pad;
-          const sy = Math.round(canvas.height * 0.47 - sh / 2) - pad;
-          softCtx.setTransform(1, 0, 0, 1, 0, 0);
-          softCtx.clearRect(0, 0, soft.width, soft.height);
-          softCtx.filter = "blur(" + 2 * dpr + "px)";
-          softCtx.drawImage(
-            canvas,
-            sx,
-            sy,
-            sw + pad * 2,
-            sh + pad * 2,
-            -pad,
-            -pad,
-            soft.width + pad * 2,
-            soft.height + pad * 2
-          );
-          softCtx.filter = "none";
-          softCtx.save();
-          softCtx.globalCompositeOperation = "destination-in";
-          softCtx.translate(soft.width / 2, soft.height / 2);
-          softCtx.scale(1, soft.height / soft.width);
-          const radius = soft.width / 2;
-          const fade = softCtx.createRadialGradient(0, 0, radius * 0.12, 0, 0, radius);
-          fade.addColorStop(0, "rgba(0,0,0,1)");
-          fade.addColorStop(0.58, "rgba(0,0,0,0.8)");
-          fade.addColorStop(1, "rgba(0,0,0,0)");
-          softCtx.fillStyle = fade;
-          softCtx.beginPath();
-          softCtx.arc(0, 0, radius, 0, Math.PI * 2);
-          softCtx.fill();
-          softCtx.restore();
-        }
-
-        function resize() {
-          const width = stage.clientWidth;
-          const height = stage.clientHeight;
-          if (!width || !height) return;
-          renderer.setSize(width, height, false);
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-          syncSoft();
-        }
-
-        function fit(model, maxDim) {
-          resize();
-          const distance = camera.position.z;
-          const vFov = THREE.MathUtils.degToRad(camera.fov);
-          const visibleH = 2 * Math.tan(vFov / 2) * distance;
-          const visibleW = visibleH * Math.max(camera.aspect, 0.01);
-          model.scale.setScalar((Math.min(visibleH, visibleW) * 0.62) / maxDim);
-        }
-
-        function frame(now) {
-          if (document.hidden) {
-            raf = 0;
-            return;
-          }
-          raf = requestAnimationFrame(frame);
-          const delta = last ? Math.min((now - last) / 1000, 0.05) : 0;
-          last = now;
-          if (!steering) {
-            pivot.rotation.y += delta * ((Math.PI * 2) / TURN);
-            target.x = pivot.rotation.x;
-            target.y = pivot.rotation.y;
-          } else {
-            const follow = 1 - Math.pow(1 - FOLLOW, delta * 60);
-            pivot.rotation.y += (target.y - pivot.rotation.y) * follow;
-            pivot.rotation.x += (target.x - pivot.rotation.x) * follow;
-          }
-          renderer.render(scene, camera);
-          if (!steering) paintSoft();
-        }
-
-        document.addEventListener("visibilitychange", () => {
-          if (document.hidden) {
-            if (raf) cancelAnimationFrame(raf);
-            raf = 0;
-            return;
-          }
-          last = 0;
-          if (!raf) raf = requestAnimationFrame(frame);
-        });
-
-        window.addEventListener("resize", () => {
-          const holder = pivot.children[0];
-          if (!holder || !holder.userData.maxDim) return;
-          fit(holder, holder.userData.maxDim);
-        });
-
-        const loader = new GLTFLoader();
-        loader.load(
-          "assets/base%20(4).glb",
-          (gltf) => {
-            const model = gltf.scene;
-            model.traverse((child) => {
-              if (!child.isMesh) return;
-              const previous = child.material;
-              child.material = chrome;
-              const materials = Array.isArray(previous) ? previous : [previous];
-              materials.forEach((material) => material && material.dispose());
-            });
-
-            model.position.set(0, 0, 0);
-            model.scale.set(1, 1, 1);
-            model.updateMatrixWorld(true);
-            const bounds = new THREE.Box3().setFromObject(model);
-            const size = bounds.getSize(new THREE.Vector3());
-            const center = bounds.getCenter(new THREE.Vector3());
-            model.position.sub(center);
-
-            const holder = new THREE.Group();
-            holder.userData.maxDim = Math.max(size.x, size.y, size.z) || 1;
-            holder.add(model);
-            pivot.add(holder);
-            stage.appendChild(canvas);
-            stage.appendChild(soft);
-            fit(holder, holder.userData.maxDim);
-            last = 0;
-            raf = requestAnimationFrame(frame);
-          },
-          undefined,
-          (error) => {
-            console.error(error);
-            if (raf) cancelAnimationFrame(raf);
-            canvas.remove();
-            chrome.dispose();
-            envMap.dispose();
-            renderer.dispose();
-          }
-        );
-      }
-    </script>
+    <main>
+      <div class="contact-row">
+        <div class="contact-copy">
+          <p class="ask">What future are you working towards?</p>
+          <p class="prose">We collaborate with people and organizations exploring what comes next. If you're developing an emerging technology, rethinking an existing system, or imagining new possibilities for living, we'd like to hear from you.</p>
+          <p class="prose">For research collaborations, industry partnerships, and conversations about the future.</p>
+          <p>Let's start a conversation.</p>
+          <p><a href="mailto:hi@radicalprototypes.com">hi@radicalprototypes.com</a></p>
+          <a
+            class="contact-link"
+            href="https://www.linkedin.com/company/radicalprototypes/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.73V1.73C24 .77 23.21 0 22.23 0z"
+              />
+            </svg>
+          </a>
+        </div>
+        <div class="contact-photo">
+          <img src="assets/contacts.png" alt="" />
+        </div>
+      </div>
+    </main>
     <footer class="page-foot">
       <div class="page-foot__wide">
         <nav class="page-foot__links" aria-label="Page">
           <a href="about.html">About</a>
           <a href="prototypes.html">Prototypes</a>
-          <a href="contact.html">Contact</a>
+          <a href="contact.html" aria-current="page">Contact</a>
         </nav>
       </div>
       <div class="page-foot__narrow">
