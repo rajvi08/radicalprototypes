@@ -314,6 +314,76 @@
         color: #111111;
         text-decoration: none;
       }
+
+      @media (max-width: 768px) {
+        .site-header {
+          height: 56px;
+        }
+
+        .site-header img {
+          height: 40px;
+        }
+
+        .page-foot__links a {
+          font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+          font-weight: 200;
+          font-size: 14px;
+          letter-spacing: 0.02em;
+          padding: 0 4px;
+        }
+
+        main {
+          padding: 16px 0;
+        }
+
+        .stage {
+          width: calc(100% - 32px);
+          height: auto;
+        }
+
+        .frames {
+          width: 100%;
+          height: 148px;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          gap: 8px;
+        }
+
+        .card__veil {
+          font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+          padding: 8px 6px;
+          gap: 4px;
+        }
+
+        .card__title {
+          font-size: 12px;
+        }
+
+        .card__line {
+          font-size: 11px;
+        }
+
+        .detail {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 3 / 4;
+          max-height: calc(100dvh - 160px);
+          padding: 22px 16px 16px;
+          font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+        }
+
+        .detail__title {
+          font-size: 16px;
+        }
+
+        .detail__desc {
+          font-size: 14px;
+        }
+
+        .detail__note {
+          font-size: 11px;
+        }
+      }
     </style>
   </head>
   <body>
