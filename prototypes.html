@@ -387,10 +387,11 @@
         .card__veil {
           opacity: 1;
           background: transparent;
-          justify-content: flex-end;
+          justify-content: center;
           align-items: flex-start;
           gap: 0;
-          padding: 10px 8px;
+          padding: 8px 6px;
+          color: #000000;
           font-family: Inter, Arial, Helvetica, sans-serif;
           transition: none;
         }
@@ -400,7 +401,10 @@
           font-weight: 300;
           font-size: 11px;
           line-height: 1.4;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+          color: #000000;
+          writing-mode: vertical-rl;
+          transform: rotate(180deg);
+          white-space: nowrap;
         }
 
         .card__line {
@@ -451,7 +455,7 @@
             <img src="assets/materials.png" alt="" />
             <span class="card__veil">
               <span class="card__title">Programmable Materials</span>
-              <span class="card__line">Engineering material properties through geometric transformation.</span>
+              <span class="card__line">Geometry-driven material design</span>
             </span>
           </button>
           <button
@@ -462,7 +466,7 @@
             <img src="assets/modulon.png" alt="" />
             <span class="card__veil">
               <span class="card__title">Modulon</span>
-              <span class="card__line">Closed loop systems for buildings.</span>
+              <span class="card__line">Closed loop systems</span>
             </span>
           </button>
           <button
